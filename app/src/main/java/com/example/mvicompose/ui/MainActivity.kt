@@ -11,12 +11,10 @@ import androidx.ui.core.setContent
 import androidx.ui.foundation.*
 import androidx.ui.graphics.Color
 import androidx.ui.layout.*
-import androidx.ui.layout.R
 import androidx.ui.livedata.observeAsState
-import androidx.ui.material.CircularProgressIndicator
-import androidx.ui.material.Divider
-import androidx.ui.material.MaterialTheme
+import androidx.ui.material.*
 import androidx.ui.res.imageResource
+import androidx.ui.res.vectorResource
 import androidx.ui.text.TextStyle
 import androidx.ui.text.font.FontStyle
 import androidx.ui.text.font.FontWeight
@@ -36,6 +34,7 @@ import com.example.mvicompose.presentation.model.UiCharacter
 import dev.chrisbanes.accompanist.coil.CoilImage
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
+import com.example.mvicompose.R
 
 class MainActivity : AppCompatActivity(), MviView<CharactersIntent, CharactersViewState> {
 
@@ -134,6 +133,7 @@ class MainActivity : AppCompatActivity(), MviView<CharactersIntent, CharactersVi
                 CharacterDivider()
             }
         }
+        Fab { refreshCharactersPublish.onNext(RefreshAllIntent) }
     }
 
     @Composable
@@ -190,4 +190,19 @@ class MainActivity : AppCompatActivity(), MviView<CharactersIntent, CharactersVi
             modifier = Modifier.preferredSize(96.dp, 96.dp)
         )
     }
+
+    @Composable
+    fun Fab(action:() -> Unit) {
+        Column(modifier = Modifier.fillMaxWidth(), horizontalGravity = Alignment.End) {
+            val icon = vectorResource(id = R.drawable.ic_refresh)
+            FloatingActionButton(
+                onClick = action,
+                modifier = Modifier.fillMaxHeight().wrapContentHeight(Alignment.Bottom).padding(36.dp),
+                backgroundColor = MaterialTheme.colors.secondary
+            ) {
+                Image(asset = icon, modifier = Modifier.preferredSize(48.dp))
+            }
+        }
+    }
+
 }

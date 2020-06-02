@@ -33,7 +33,6 @@ class MainActivity : AppCompatActivity(), MviView<CharactersIntent, CharactersVi
         super.onCreate(savedInstanceState)
         processIntents()
 
-
         setContent {
             val themeColors = if (isSystemInDarkTheme()) darkThemeColors else lightThemeColors
 
@@ -45,9 +44,7 @@ class MainActivity : AppCompatActivity(), MviView<CharactersIntent, CharactersVi
         }
     }
 
-    private fun processIntents() {
-        viewModel.processIntents(intents())
-    }
+    private fun processIntents(): Unit = viewModel.processIntents(intents())
 
     override fun intents(): Observable<CharactersIntent> {
         return Observable.merge(
@@ -57,28 +54,19 @@ class MainActivity : AppCompatActivity(), MviView<CharactersIntent, CharactersVi
         )
     }
 
-    private fun automaticIntent() = Observable.just(LoadAllIntent)
-
-    private fun retryLoadIntent() = retryLoadPublish
-
-    private fun refreshLoadIntent() = refreshCharactersPublish
-
     @Composable
     override fun Render(state: CharactersViewState) {
         when (state) {
             is DefaultState         -> Default()
-
             is LoadingState         -> Loading()
-
-            is NoneCharactersState  -> ComposeEmptyCharacters {
-                refreshCharactersPublish.onNext(RefreshAllIntent)
-            }
-            is CharactersListState  -> ComposeCharacters(state.characters) {
-                refreshCharactersPublish.onNext(RefreshAllIntent)
-            }
-            is FailureState         -> Failure(state.error) {
-                retryLoadPublish.onNext(RetryLoadAllIntent)
-            }
+            is NoneCharactersState  -> ComposeEmptyCharacters { emitRefreshIntent() }
+            is CharactersListState  -> ComposeCharacters(state.characters) { emitRefreshIntent() }
+            is FailureState         -> Failure(state.error) { emitRetryIntent() }
         }
     }
+
+    private fun emitRefreshIntent(): Unit = refreshCharactersPublish.onNext(RefreshAllIntent)
+
+    private fun emitRetryIntent(): Unit = retryLoadPublish.onNext(RetryLoadAllIntent)
+
 }

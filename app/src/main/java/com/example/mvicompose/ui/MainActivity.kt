@@ -13,7 +13,6 @@ import androidx.ui.graphics.Color
 import androidx.ui.layout.*
 import androidx.ui.livedata.observeAsState
 import androidx.ui.material.*
-import androidx.ui.res.imageResource
 import androidx.ui.res.vectorResource
 import androidx.ui.text.TextStyle
 import androidx.ui.text.font.FontStyle
@@ -24,8 +23,6 @@ import coil.request.GetRequest
 import coil.transform.CircleCropTransformation
 import com.example.mvicompose.mvibase.MviView
 import com.example.mvicompose.presentation.CharactersIntent
-import com.example.mvicompose.presentation.CharactersIntent.LoadAllIntent
-import com.example.mvicompose.presentation.CharactersIntent.RefreshAllIntent
 import com.example.mvicompose.presentation.CharactersViewModel
 import com.example.mvicompose.presentation.CharactersViewModelFactory
 import com.example.mvicompose.presentation.CharactersViewState
@@ -35,10 +32,11 @@ import dev.chrisbanes.accompanist.coil.CoilImage
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import com.example.mvicompose.R
+import com.example.mvicompose.presentation.CharactersIntent.*
 
 class MainActivity : AppCompatActivity(), MviView<CharactersIntent, CharactersViewState> {
 
-    private val retryLoadPublish = PublishSubject.create<CharactersIntent>()
+    private val retryLoadPublish = PublishSubject.create<RetryLoadAllIntent>()
     private val refreshCharactersPublish = PublishSubject.create<RefreshAllIntent>()
 
     private val viewModel: CharactersViewModel by lazy(LazyThreadSafetyMode.NONE) {
@@ -85,8 +83,7 @@ class MainActivity : AppCompatActivity(), MviView<CharactersIntent, CharactersVi
         when (state) {
             is DefaultState -> Default()
             is LoadingState -> Loading()
-            is NoneCharactersState -> {
-            }
+            is NoneCharactersState -> ComposeEmptyCharacters()
             is CharactersListState -> ComposeCharacters(state.characters)
             is FailureState -> Failure(e = state.error)
         }
@@ -95,12 +92,8 @@ class MainActivity : AppCompatActivity(), MviView<CharactersIntent, CharactersVi
     @Composable
     private fun Default() {
         Column(modifier = Modifier.fillMaxSize().wrapContentSize(Alignment.Center)) {
-            Image(
-                asset = imageResource(id = R.drawable.notification_bg_normal_pressed),
-                modifier = Modifier.fillMaxWidth().wrapContentSize(Alignment.Center)
-            )
             Text(
-                text = "message",
+                text = "Rick and Morty",
                 modifier = Modifier.fillMaxWidth().wrapContentSize(Alignment.Center)
                     .padding(16.dp),
                 style = MaterialTheme.typography.body1
@@ -111,11 +104,18 @@ class MainActivity : AppCompatActivity(), MviView<CharactersIntent, CharactersVi
     @Composable
     private fun Failure(e: Throwable) {
         e.printStackTrace()
-        Text(
-            text = "Error",
-            modifier = Modifier.fillMaxWidth().wrapContentSize(Alignment.Center)
-                .padding(16.dp)
-        )
+        Column(modifier = Modifier.fillMaxSize().wrapContentSize(Alignment.Center).padding(96.dp)) {
+            val icon = vectorResource(id = R.drawable.ic_not_found)
+            Image(
+                asset = icon,
+                modifier = Modifier.fillMaxWidth().wrapContentSize(Alignment.Center)
+            )
+            Button(
+                modifier = Modifier.fillMaxWidth().wrapContentSize(Alignment.Center),
+                onClick = { retryLoadPublish.onNext(RetryLoadAllIntent) }) {
+                Text(text = "Retry")
+            }
+        }
     }
 
     @Composable
@@ -123,6 +123,18 @@ class MainActivity : AppCompatActivity(), MviView<CharactersIntent, CharactersVi
         Box(modifier = Modifier.fillMaxSize().wrapContentSize(Alignment.Center)) {
             CircularProgressIndicator(color = Color.Green)
         }
+    }
+
+    @Composable
+    fun ComposeEmptyCharacters() {
+        Column(modifier = Modifier.fillMaxSize().wrapContentSize(Alignment.Center)) {
+            val icon = vectorResource(id = R.drawable.ic_empty_state)
+            Image(
+                asset = icon,
+                modifier = Modifier.fillMaxWidth().wrapContentSize(Alignment.Center)
+            )
+        }
+        Fab { refreshCharactersPublish.onNext(RefreshAllIntent) }
     }
 
     @Composable
@@ -192,12 +204,13 @@ class MainActivity : AppCompatActivity(), MviView<CharactersIntent, CharactersVi
     }
 
     @Composable
-    fun Fab(action:() -> Unit) {
+    fun Fab(action: () -> Unit) {
         Column(modifier = Modifier.fillMaxWidth(), horizontalGravity = Alignment.End) {
             val icon = vectorResource(id = R.drawable.ic_refresh)
             FloatingActionButton(
                 onClick = action,
-                modifier = Modifier.fillMaxHeight().wrapContentHeight(Alignment.Bottom).padding(36.dp),
+                modifier = Modifier.fillMaxHeight().wrapContentHeight(Alignment.Bottom)
+                    .padding(36.dp),
                 backgroundColor = MaterialTheme.colors.secondary
             ) {
                 Image(asset = icon, modifier = Modifier.preferredSize(48.dp))

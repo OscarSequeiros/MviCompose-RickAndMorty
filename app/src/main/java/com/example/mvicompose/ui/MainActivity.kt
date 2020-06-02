@@ -4,35 +4,20 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.Composable
 import androidx.lifecycle.ViewModelProvider
-import androidx.ui.core.Alignment
-import androidx.ui.core.ContextAmbient
-import androidx.ui.core.Modifier
 import androidx.ui.core.setContent
-import androidx.ui.foundation.*
-import androidx.ui.graphics.Color
-import androidx.ui.layout.*
+import androidx.ui.foundation.isSystemInDarkTheme
 import androidx.ui.livedata.observeAsState
-import androidx.ui.material.*
-import androidx.ui.res.vectorResource
-import androidx.ui.text.TextStyle
-import androidx.ui.text.font.FontStyle
-import androidx.ui.text.font.FontWeight
-import androidx.ui.unit.dp
-import androidx.ui.unit.sp
-import coil.request.GetRequest
-import coil.transform.CircleCropTransformation
+import androidx.ui.material.MaterialTheme
 import com.example.mvicompose.mvibase.MviView
 import com.example.mvicompose.presentation.CharactersIntent
+import com.example.mvicompose.presentation.CharactersIntent.*
 import com.example.mvicompose.presentation.CharactersViewModel
 import com.example.mvicompose.presentation.CharactersViewModelFactory
 import com.example.mvicompose.presentation.CharactersViewState
 import com.example.mvicompose.presentation.CharactersViewState.*
-import com.example.mvicompose.presentation.model.UiCharacter
-import dev.chrisbanes.accompanist.coil.CoilImage
+import com.example.mvicompose.ui.compose.*
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
-import com.example.mvicompose.R
-import com.example.mvicompose.presentation.CharactersIntent.*
 
 class MainActivity : AppCompatActivity(), MviView<CharactersIntent, CharactersViewState> {
 
@@ -66,9 +51,9 @@ class MainActivity : AppCompatActivity(), MviView<CharactersIntent, CharactersVi
 
     override fun intents(): Observable<CharactersIntent> {
         return Observable.merge(
-            automaticIntent(),
-            retryLoadIntent(),
-            refreshLoadIntent()
+            Observable.just(LoadAllIntent),
+            retryLoadPublish,
+            refreshCharactersPublish
         )
     }
 
@@ -81,141 +66,19 @@ class MainActivity : AppCompatActivity(), MviView<CharactersIntent, CharactersVi
     @Composable
     override fun Render(state: CharactersViewState) {
         when (state) {
-            is DefaultState -> Default()
-            is LoadingState -> Loading()
-            is NoneCharactersState -> ComposeEmptyCharacters()
-            is CharactersListState -> ComposeCharacters(state.characters)
-            is FailureState -> Failure(e = state.error)
-        }
-    }
+            is DefaultState         -> Default()
 
-    @Composable
-    private fun Default() {
-        Column(modifier = Modifier.fillMaxSize().wrapContentSize(Alignment.Center)) {
-            Text(
-                text = "Rick and Morty",
-                modifier = Modifier.fillMaxWidth().wrapContentSize(Alignment.Center)
-                    .padding(16.dp),
-                style = MaterialTheme.typography.body1
-            )
-        }
-    }
+            is LoadingState         -> Loading()
 
-    @Composable
-    private fun Failure(e: Throwable) {
-        e.printStackTrace()
-        Column(modifier = Modifier.fillMaxSize().wrapContentSize(Alignment.Center).padding(96.dp)) {
-            val icon = vectorResource(id = R.drawable.ic_not_found)
-            Image(
-                asset = icon,
-                modifier = Modifier.fillMaxWidth().wrapContentSize(Alignment.Center)
-            )
-            Button(
-                modifier = Modifier.fillMaxWidth().wrapContentSize(Alignment.Center),
-                onClick = { retryLoadPublish.onNext(RetryLoadAllIntent) }) {
-                Text(text = "Retry")
+            is NoneCharactersState  -> ComposeEmptyCharacters {
+                refreshCharactersPublish.onNext(RefreshAllIntent)
+            }
+            is CharactersListState  -> ComposeCharacters(state.characters) {
+                refreshCharactersPublish.onNext(RefreshAllIntent)
+            }
+            is FailureState         -> Failure(state.error) {
+                retryLoadPublish.onNext(RetryLoadAllIntent)
             }
         }
     }
-
-    @Composable
-    fun Loading() {
-        Box(modifier = Modifier.fillMaxSize().wrapContentSize(Alignment.Center)) {
-            CircularProgressIndicator(color = Color.Green)
-        }
-    }
-
-    @Composable
-    fun ComposeEmptyCharacters() {
-        Column(modifier = Modifier.fillMaxSize().wrapContentSize(Alignment.Center)) {
-            val icon = vectorResource(id = R.drawable.ic_empty_state)
-            Image(
-                asset = icon,
-                modifier = Modifier.fillMaxWidth().wrapContentSize(Alignment.Center)
-            )
-        }
-        Fab { refreshCharactersPublish.onNext(RefreshAllIntent) }
-    }
-
-    @Composable
-    fun ComposeCharacters(characters: List<UiCharacter>) {
-        VStack {
-            characters.map {
-                CharacterView(it)
-                CharacterDivider()
-            }
-        }
-        Fab { refreshCharactersPublish.onNext(RefreshAllIntent) }
-    }
-
-    @Composable
-    fun VStack(child: @Composable() () -> Unit) =
-        VerticalScroller {
-            Column(modifier = Modifier.fillMaxWidth()) {
-                child()
-            }
-        }
-
-
-    @Composable
-    fun CharacterDivider() =
-        Divider(color = MaterialTheme.colors.onSurface.copy(alpha = 0.08f))
-
-    @Composable
-    fun CharacterView(character: UiCharacter) =
-        Row(
-            modifier = Modifier.padding(16.dp).fillMaxWidth().wrapContentSize(Alignment.CenterStart)
-        ) {
-            CharacterImage(character.urlImage)
-            Column(
-                modifier = Modifier.fillMaxWidth().wrapContentSize(Alignment.CenterStart)
-                    .padding(12.dp)
-            ) {
-                Text(
-                    text = character.name,
-                    color = MaterialTheme.colors.onPrimary,
-                    style = TextStyle(fontWeight = FontWeight.Bold),
-                    fontSize = 18.sp
-                )
-                Text(
-                    text = character.gender,
-                    color = MaterialTheme.colors.onPrimary,
-                    fontStyle = FontStyle.Italic,
-                    modifier = Modifier.padding(top = 4.dp)
-                )
-                Text(
-                    text = character.specieStatus,
-                    color = MaterialTheme.colors.onPrimary,
-                    modifier = Modifier.padding(top = 4.dp)
-                )
-            }
-        }
-
-
-    @Composable
-    fun CharacterImage(urlImage: String) {
-        CoilImage(
-            request = GetRequest.Builder(ContextAmbient.current)
-                .data(urlImage)
-                .transformations(CircleCropTransformation())
-                .build(),
-            modifier = Modifier.preferredSize(96.dp, 96.dp)
-        )
-    }
-
-    @Composable
-    fun Fab(action: () -> Unit) {
-        Column(modifier = Modifier.fillMaxWidth(), horizontalGravity = Alignment.End) {
-            val icon = vectorResource(id = R.drawable.ic_refresh)
-            FloatingActionButton(
-                onClick = action,
-                modifier = Modifier.fillMaxHeight().wrapContentHeight(Alignment.Bottom)
-                    .padding(36.dp),
-                backgroundColor = MaterialTheme.colors.secondary
-            ) {
-                Image(asset = icon, modifier = Modifier.preferredSize(48.dp))
-            }
-        }
-    }
-
 }

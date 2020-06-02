@@ -11,5 +11,9 @@ data class UiCharacter(
 ) {
 
     val specieStatus: String
-        get() = "$species / $status / $type"
+        get() = if (type.isNotEmpty()) {
+            "$species / $status / $type" 
+        } else {
+            "$species / $status"
+        }
 }

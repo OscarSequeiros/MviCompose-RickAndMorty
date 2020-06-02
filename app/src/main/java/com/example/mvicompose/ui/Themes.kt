@@ -41,16 +41,16 @@ val darkThemeColors = darkColorPalette(
 val appFontFamily = fontFamily(
     fonts = listOf(
         ResourceFont(
-            resId = R.font.font_bold,
+            resId = R.font.lato_bold,
             weight = FontWeight.Medium
         ),
         ResourceFont(
-            resId = R.font.font_italic,
-            weight = FontWeight.W700,
+            resId = R.font.lato_italic,
+            weight = FontWeight.W300,
             style = FontStyle.Italic
         ),
         ResourceFont(
-            resId = R.font.font_regular,
+            resId = R.font.lato_regular,
             weight = FontWeight.W400,
             style = FontStyle.Normal
         )
@@ -58,6 +58,7 @@ val appFontFamily = fontFamily(
 )
 
 private val defaultTypography = Typography()
+
 val appTypography = Typography(
     h1 = defaultTypography.h1.copy(fontFamily = appFontFamily),
     h2 = defaultTypography.h2.copy(fontFamily = appFontFamily),

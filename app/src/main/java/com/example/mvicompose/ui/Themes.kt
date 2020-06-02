@@ -13,7 +13,7 @@ import com.example.mvicompose.R
 val lightThemeColors = lightColorPalette(
     primary = Color(98, 0, 238),
     primaryVariant = Color(55, 0, 179),
-    onPrimary = Color.White,
+    onPrimary = Color(18, 7, 9),
     secondary = Color(0, 150, 136),
     onSecondary = Color.Black,
     background = Color.White,

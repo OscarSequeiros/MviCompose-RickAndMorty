@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity(), MviView<CharactersIntent, CharactersVi
         setContent {
             val themeColors = if (isSystemInDarkTheme()) darkThemeColors else lightThemeColors
 
-            MaterialTheme(colors = themeColors) {
+            MaterialTheme(colors = themeColors, typography = appTypography) {
                 viewModel.liveData().observeAsState().value?.let { state: CharactersViewState ->
                     Render(state)
                 }

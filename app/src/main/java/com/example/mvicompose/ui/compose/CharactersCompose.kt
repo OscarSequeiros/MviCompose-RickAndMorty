@@ -11,11 +11,8 @@ import androidx.ui.foundation.VerticalScroller
 import androidx.ui.layout.*
 import androidx.ui.material.*
 import androidx.ui.res.vectorResource
-import androidx.ui.text.TextStyle
 import androidx.ui.text.font.FontStyle
-import androidx.ui.text.font.FontWeight
 import androidx.ui.unit.dp
-import androidx.ui.unit.sp
 import coil.request.GetRequest
 import coil.transform.CircleCropTransformation
 import com.example.mvicompose.R
@@ -114,18 +111,19 @@ fun CharacterView(character: UiCharacter) =
             Text(
                 text = character.name,
                 color = MaterialTheme.colors.onPrimary,
-                style = TextStyle(fontWeight = FontWeight.Bold),
-                fontSize = 18.sp
+                style = MaterialTheme.typography.h6
             )
             Text(
                 text = character.gender,
                 color = MaterialTheme.colors.onPrimary,
+                style = MaterialTheme.typography.body1,
                 fontStyle = FontStyle.Italic,
                 modifier = Modifier.padding(top = 4.dp)
             )
             Text(
                 text = character.specieStatus,
                 color = MaterialTheme.colors.onPrimary,
+                fontStyle = FontStyle.Normal,
                 modifier = Modifier.padding(top = 4.dp)
             )
         }

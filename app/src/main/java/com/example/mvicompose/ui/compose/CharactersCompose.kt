@@ -12,6 +12,7 @@ import androidx.ui.layout.*
 import androidx.ui.material.*
 import androidx.ui.res.vectorResource
 import androidx.ui.text.font.FontStyle
+import androidx.ui.text.style.TextOverflow
 import androidx.ui.unit.dp
 import coil.request.GetRequest
 import coil.transform.CircleCropTransformation
@@ -124,7 +125,9 @@ fun CharacterView(character: UiCharacter) =
                 text = character.specieStatus,
                 color = MaterialTheme.colors.onPrimary,
                 fontStyle = FontStyle.Normal,
-                modifier = Modifier.padding(top = 4.dp)
+                modifier = Modifier.padding(top = 4.dp),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
         }
     }

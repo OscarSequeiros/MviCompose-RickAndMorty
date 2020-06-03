@@ -1,5 +1,6 @@
 package com.example.mvicompose.presentation
 
+import arrow.core.NonEmptyList
 import com.example.mvicompose.domain.model.Character
 import com.example.mvicompose.domain.usecase.GetCharactersUseCase
 import com.example.mvicompose.presentation.CharacterResult.*
@@ -49,7 +50,7 @@ class CharactersProcessorHolder(
         return if (characters.isEmpty()) {
             LoadAllResult.EmptyCharacterList
         } else {
-            LoadAllResult.FilledCharacterList(characters)
+            LoadAllResult.FilledCharacterList(NonEmptyList.fromListUnsafe(characters))
         }
     }
 }

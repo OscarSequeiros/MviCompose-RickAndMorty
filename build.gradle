@@ -28,7 +28,3 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
-
-ext {
-    composeVersion = "0.1.0-dev12"
-}

@@ -68,6 +68,7 @@ dependencies {
     kapt ArrowLibraries.kapt
 
     testImplementation TestLibraries.jUnit
+    testImplementation TestLibraries.mockitoKotlin
 
     androidTestImplementation TestLibraries.androidJUnit
     androidTestImplementation TestLibraries.espresso

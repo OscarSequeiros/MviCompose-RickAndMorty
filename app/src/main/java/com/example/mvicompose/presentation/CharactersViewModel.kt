@@ -18,7 +18,7 @@ class CharactersViewModel(
 
     private val intentsSubject: PublishSubject<CharactersIntent> = PublishSubject.create()
 
-    private val statesObservable: Observable<CharactersViewState> = compose()
+    val statesObservable: Observable<CharactersViewState> = compose()
 
     private val liveDataStates: MutableLiveData<CharactersViewState> = MutableLiveData()
 

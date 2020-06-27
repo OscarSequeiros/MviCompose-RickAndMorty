@@ -6,8 +6,9 @@ import com.example.mvicompose.domain.model.Character
 import com.example.mvicompose.domain.model.Gender
 import com.example.mvicompose.domain.model.Status
 import com.example.mvicompose.presentation.model.UiCharacter
+import javax.inject.Inject
 
-class UiCharacterMapper {
+class UiCharacterMapper @Inject constructor() {
 
     fun map(characters: NonEmptyList<Character>): List<UiCharacter> {
         return characters.map(::map).toList()

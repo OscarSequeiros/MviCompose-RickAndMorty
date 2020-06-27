@@ -1,6 +1,7 @@
 package com.example.mvicompose.ui
 
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.Composable
 import androidx.lifecycle.ViewModelProvider
@@ -16,18 +17,17 @@ import com.example.mvicompose.presentation.CharactersViewModelFactory
 import com.example.mvicompose.presentation.CharactersViewState
 import com.example.mvicompose.presentation.CharactersViewState.*
 import com.example.mvicompose.ui.compose.*
+import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity(), MviView<CharactersIntent, CharactersViewState> {
 
     private val retryLoadPublish = PublishSubject.create<RetryLoadAllIntent>()
     private val refreshCharactersPublish = PublishSubject.create<RefreshAllIntent>()
 
-    private val viewModel: CharactersViewModel by lazy(LazyThreadSafetyMode.NONE) {
-        ViewModelProvider(this, CharactersViewModelFactory())
-            .get(CharactersViewModel::class.java)
-    }
+    private val viewModel: CharactersViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

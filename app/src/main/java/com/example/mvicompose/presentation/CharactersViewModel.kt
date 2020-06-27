@@ -1,5 +1,6 @@
 package com.example.mvicompose.presentation
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,7 +12,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.BiFunction
 import io.reactivex.subjects.PublishSubject
 
-class CharactersViewModel(
+class CharactersViewModel @ViewModelInject constructor (
     private val actionProcessor: CharactersProcessorHolder,
     private val stateMachine: CharactersStateMachine
 ) : ViewModel(), MviViewModel<CharactersIntent, CharactersViewState> {

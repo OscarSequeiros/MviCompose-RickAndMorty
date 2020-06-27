@@ -8,8 +8,9 @@ import com.example.mvicompose.presentation.CharactersAction.*
 import com.example.mvicompose.rx.SchedulerProvider
 import io.reactivex.Observable
 import io.reactivex.ObservableTransformer
+import javax.inject.Inject
 
-class CharactersProcessorHolder(
+class CharactersProcessorHolder @Inject constructor(
     private val getCharactersUseCase: GetCharactersUseCase,
     private val schedulerProvider: SchedulerProvider
 ) {

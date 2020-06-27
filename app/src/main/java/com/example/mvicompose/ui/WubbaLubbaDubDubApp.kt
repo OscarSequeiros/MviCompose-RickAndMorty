@@ -1,10 +1,7 @@
 package com.example.mvicompose.ui
 
 import android.app.Application
+import dagger.hilt.android.HiltAndroidApp
 
-class WubbaLubbaDubDubApp : Application() {
-
-    override fun onCreate() {
-        super.onCreate()
-    }
-}
+@HiltAndroidApp
+class WubbaLubbaDubDubApp : Application()

@@ -90,3 +90,12 @@ object TestLibraries {
     const val espresso = "androidx.test.espresso:espresso-core:${Versions.androidEspresso}"
     const val mockk = "io.mockk:mockk:${Versions.mockk}"
 }
+
+object DILibraries {
+    object Versions {
+        const val hilt = "2.28-alpha"
+    }
+
+    const val hilt = "com.google.dagger:hilt-android:${Versions.hilt}"
+    const val kapt =  "com.google.dagger:hilt-android-compiler:${Versions.hilt}"
+}

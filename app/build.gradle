@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-android-extensions'
     id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
 }
 
 android {
@@ -66,6 +67,9 @@ dependencies {
     implementation ArrowLibraries.core
     implementation ArrowLibraries.syntax
     kapt ArrowLibraries.kapt
+
+    implementation DILibraries.hilt
+    kapt DILibraries.kapt
 
     testImplementation TestLibraries.jUnit
     testImplementation TestLibraries.mockk

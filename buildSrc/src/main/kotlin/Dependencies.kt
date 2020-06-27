@@ -9,11 +9,13 @@ object AndroidLibraries {
         const val core = "1.3.0"
         const val appCompat = "1.1.0"
         const val material = "1.1.0"
+        const val fragmentKtx = "1.2.5"
     }
 
     const val core = "androidx.core:core-ktx:${Versions.core}"
     const val appCompat = "androidx.appcompat:appcompat:${Versions.appCompat}"
     const val material = "com.google.android.material:material:${Versions.material}"
+    const val fragmentKtx = "androidx.fragment:fragment-ktx:${Versions.fragmentKtx}"
 }
 
 object ComposeLibraries {
@@ -94,8 +96,11 @@ object TestLibraries {
 object DILibraries {
     object Versions {
         const val hilt = "2.28-alpha"
+        const val lifecycle = "1.0.0-alpha01"
     }
 
     const val hilt = "com.google.dagger:hilt-android:${Versions.hilt}"
     const val kapt =  "com.google.dagger:hilt-android-compiler:${Versions.hilt}"
+    const val lifecycle = "androidx.hilt:hilt-lifecycle-viewmodel:${Versions.lifecycle}"
+    //const val kapt kapt 'androidx.hilt:hilt-compiler:1.0.0-alpha01'
 }

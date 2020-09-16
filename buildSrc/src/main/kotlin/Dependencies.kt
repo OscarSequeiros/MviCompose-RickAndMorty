@@ -56,7 +56,7 @@ object CoilLibrary {
 object NetworkLibraries {
     object Versions {
         const val gson = "2.8.6"
-        const val retrofit = "2.8.1"
+        const val retrofit = "2.9.0"
         const val okHttpInterceptor = "4.5.0"
     }
 
@@ -82,11 +82,13 @@ object TestLibraries {
         const val jUnit = "4.13"
         const val androidJUnit = "1.1.1"
         const val androidEspresso = "3.2.0"
-        const val mockk = "1.9.3"
+        const val mockk = "1.10.0"
+        const val coroutines = "1.3.9"
     }
 
     const val jUnit = "junit:junit:${Versions.jUnit}"
     const val androidJUnit = "androidx.test.ext:junit:${Versions.androidJUnit}"
     const val espresso = "androidx.test.espresso:espresso-core:${Versions.androidEspresso}"
     const val mockk = "io.mockk:mockk:${Versions.mockk}"
+    const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutines}"
 }

@@ -4,11 +4,12 @@ import com.example.mvicompose.domain.model.Character
 import com.example.mvicompose.domain.usecase.GetCharactersUseCase
 import com.example.mvicompose.presentation.mapper.UiCharacterMapper
 import com.example.mvicompose.rx.FakeScheduleProvider
+import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import io.reactivex.Observable
-import io.reactivex.Single
 import io.reactivex.observers.TestObserver
+import kotlinx.coroutines.delay
 import org.junit.Before
 import org.junit.Test
 
@@ -39,9 +40,10 @@ class CharactersViewModelTest {
 
     @Test
     fun `given characters from use case, when process LoadAllIntent, gets CharactersListState`() {
-        stubUseCase(Single.just(characters))
+        stubUseCase(characters)
         stubMapper()
         viewModel.processIntents(Observable.just(CharactersIntent.LoadAllIntent))
+
 
         testObserver.assertValueAt(0) { it is CharactersViewState.DefaultState }
         testObserver.assertValueAt(1) { it is CharactersViewState.LoadingState }
@@ -50,18 +52,18 @@ class CharactersViewModelTest {
 
     @Test
     fun `given no characters from use case, when process LoadAllIntent, gets NoneCharactersState`() {
-        stubUseCase(Single.just(emptyList()))
+        stubUseCase(emptyList())
         stubMapper()
         viewModel.processIntents(Observable.just(CharactersIntent.LoadAllIntent))
 
         testObserver.assertValueAt(0) { it is CharactersViewState.DefaultState }
         testObserver.assertValueAt(1) { it is CharactersViewState.LoadingState }
-        testObserver.assertValueAt(2) { it is CharactersViewState.NoneCharactersState }
+        testObserver.assertValueAt(1) { it is CharactersViewState.NoneCharactersState }
     }
 
     @Test
     fun `given error from use case, when process LoadAllIntent, gets FailureState`() {
-        stubUseCase(Single.error(Throwable()))
+        stubErrorUseCase()
         stubMapper()
         viewModel.processIntents(Observable.just(CharactersIntent.LoadAllIntent))
 
@@ -72,7 +74,7 @@ class CharactersViewModelTest {
 
     @Test
     fun `given characters from use case, when process LoadAllIntent and RetryLoadAllIntent, gets CharactersListState`() {
-        stubUseCase(Single.just(characters))
+        stubUseCase(characters)
         stubMapper()
 
         viewModel.processIntents(Observable.create { emitter ->
@@ -88,8 +90,18 @@ class CharactersViewModelTest {
         testObserver.assertValueAt(4) { it is CharactersViewState.CharactersListState }
     }
 
-    private fun stubUseCase(single: Single<List<Character>>) {
-        every { useCase.invoke() } returns single
+    private fun stubUseCase(characters: List<Character>) {
+        coEvery { useCase.invoke() } coAnswers {
+            delay(1000)
+            characters
+        }
+    }
+
+    private fun stubErrorUseCase() {
+        coEvery { useCase.invoke() } coAnswers {
+            delay(1000)
+            throw Throwable("")
+        }
     }
 
     private fun stubMapper() {

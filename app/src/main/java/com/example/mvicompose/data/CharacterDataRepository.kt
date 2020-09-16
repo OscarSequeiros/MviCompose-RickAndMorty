@@ -10,9 +10,8 @@ class CharacterDataRepository(
     private val dataMapper: DataCharacterMapper
 ) : CharacterRepository {
 
-    override fun getAll(): Single<List<Character>> {
-        return remoteStore
-            .getAllCharacters()
-            .map { dataMapper.map(it) }
+    override suspend fun getAll(): List<Character> {
+        val remoteCharacters = remoteStore.getAllCharacters()
+        return dataMapper.map(remoteCharacters)
     }
 }

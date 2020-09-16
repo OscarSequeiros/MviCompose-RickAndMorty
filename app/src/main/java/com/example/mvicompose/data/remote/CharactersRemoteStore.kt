@@ -9,8 +9,7 @@ class CharactersRemoteStore(private val api: RickAndMortyApi) {
     // It allows us to get different characters for every request:
     private val random = Random(System.currentTimeMillis())
 
-    fun getAllCharacters(): Single<List<RemoteCharacter>> {
-        return api.getCharacters(random.nextInt(1, 16))
-            .map { it.results }
+    suspend fun getAllCharacters(): List<RemoteCharacter> {
+        return api.getCharacters(random.nextInt(1, 16)).results
     }
 }

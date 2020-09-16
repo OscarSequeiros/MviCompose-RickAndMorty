@@ -8,43 +8,40 @@ import com.example.mvicompose.presentation.CharactersAction.*
 import com.example.mvicompose.rx.SchedulerProvider
 import io.reactivex.Observable
 import io.reactivex.ObservableTransformer
+import kotlinx.coroutines.*
 
 class CharactersProcessorHolder(
     private val getCharactersUseCase: GetCharactersUseCase,
     private val schedulerProvider: SchedulerProvider
 ) {
 
+    private val processorJob = Job()
+    private val coroutineScope = CoroutineScope(processorJob + Dispatchers.IO)
+
     val actionProcessor =
         ObservableTransformer<CharactersAction, CharacterResult> { actions ->
-            actions.publish { shared ->
-                Observable.merge(
-                    shared.ofType(LoadAllAction::class.java).compose(loadAllProcessor),
-                    shared
-                        .filter { action -> action !is LoadAllAction }
-                        .flatMap { action ->
-                            Observable.error<CharacterResult> {
-                                IllegalArgumentException("unknown action type :$action")
-                            }
-                        }
-                )
-            }
+            actions.ofType(LoadAllAction::class.java).compose(loadAllProcessor)
         }
 
     private val loadAllProcessor =
         ObservableTransformer<LoadAllAction, LoadAllResult> { actions ->
             actions
                 .flatMap {
-                    getCharactersUseCase()
-                        .toObservable()
-                        .map(::defineSuccessResult)
-                        .cast(LoadAllResult::class.java)
-                        .onErrorReturn(LoadAllResult::Failure)
-                        .subscribeOn(schedulerProvider.io())
+                    Observable.create<LoadAllResult> { source ->
+                        source.onNext(LoadAllResult.Loading)
+
+                        val errorHandler = CoroutineExceptionHandler { _, exception ->
+                            source.onNext(LoadAllResult.Failure(exception))
+                        }
+
+                        coroutineScope.launch(errorHandler) {
+                            val characters = getCharactersUseCase()
+                            source.onNext(defineSuccessResult(characters))
+                        }
+                    }
                         .observeOn(schedulerProvider.ui())
-                        .startWith(LoadAllResult.Loading)
                 }
         }
-
 
     private fun defineSuccessResult(characters: List<Character>): LoadAllResult {
         return if (characters.isEmpty()) {

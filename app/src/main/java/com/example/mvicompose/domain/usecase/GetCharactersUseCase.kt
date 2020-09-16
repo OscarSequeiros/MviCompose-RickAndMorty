@@ -6,7 +6,7 @@ import io.reactivex.Single
 
 class GetCharactersUseCase(private val repository: CharacterRepository) {
 
-    operator fun invoke(): Single<List<Character>> {
+    suspend operator fun invoke(): List<Character> {
         return repository.getAll()
     }
 }

@@ -18,18 +18,17 @@ object AndroidLibraries {
 
 object ComposeLibraries {
     object Versions {
-        const val compose = "0.1.0-dev12"
-        const val composeCompiler = "1.3.70-dev-withExperimentalGoogleExtensions-20200424"
+        const val compose = "1.0.0-alpha04"
     }
 
-    const val layout = "androidx.ui:ui-layout:${Versions.compose}"
-    const val material = "androidx.ui:ui-material:${Versions.compose}"
-    const val liveData = "androidx.ui:ui-livedata:${Versions.compose}"
+    const val ui = "androidx.compose.ui:ui:${Versions.compose}"
+    const val material = "androidx.compose.material:material:${Versions.compose}"
+    const val liveData = "androidx.compose.runtime:runtime-livedata:${Versions.compose}"
 }
 
 object KotlinLibraries {
     object Versions {
-        const val kotlin = "1.3.72"
+        const val kotlin = "1.4.0"
     }
 
     const val kotlinStdLibrary = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${Versions.kotlin}"
@@ -47,7 +46,7 @@ object ArrowLibraries {
 
 object CoilLibrary {
     object Version {
-        const val coil = "0.1.3"
+        const val coil = "0.3.0"
     }
 
     const val coilCompose = "dev.chrisbanes.accompanist:accompanist-coil:${Version.coil}"

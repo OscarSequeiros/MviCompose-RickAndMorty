@@ -29,9 +29,11 @@ object ComposeLibraries {
 object KotlinLibraries {
     object Versions {
         const val kotlin = "1.4.0"
+        const val coroutines = "1.3.9"
     }
 
     const val kotlinStdLibrary = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${Versions.kotlin}"
+    const val coroutinesCore = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutines}"
 }
 
 object ArrowLibraries {

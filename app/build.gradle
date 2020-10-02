@@ -46,6 +46,8 @@ android {
 dependencies {
 
     implementation KotlinLibraries.kotlinStdLibrary
+    implementation KotlinLibraries.coroutinesCore
+
     implementation AndroidLibraries.core
     implementation AndroidLibraries.appCompat
     implementation AndroidLibraries.material

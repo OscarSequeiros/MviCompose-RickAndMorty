@@ -2,12 +2,13 @@ package com.example.mvicompose.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.Composable
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material.MaterialTheme
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.platform.setContent
 import androidx.lifecycle.ViewModelProvider
-import androidx.ui.core.setContent
-import androidx.ui.foundation.isSystemInDarkTheme
-import androidx.ui.livedata.observeAsState
-import androidx.ui.material.MaterialTheme
+
 import com.example.mvicompose.mvibase.MviView
 import com.example.mvicompose.presentation.CharactersIntent
 import com.example.mvicompose.presentation.CharactersIntent.*

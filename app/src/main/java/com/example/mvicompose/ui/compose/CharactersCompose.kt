@@ -1,20 +1,17 @@
 package com.example.mvicompose.ui.compose
 
-import androidx.compose.Composable
-import androidx.ui.core.Alignment
-import androidx.ui.core.ContextAmbient
-import androidx.ui.core.Modifier
-import androidx.ui.foundation.Box
-import androidx.ui.foundation.Image
-import androidx.ui.foundation.Text
-import androidx.ui.foundation.VerticalScroller
-import androidx.ui.layout.*
-import androidx.ui.material.*
-import androidx.ui.res.vectorResource
-import androidx.ui.text.font.FontStyle
-import androidx.ui.text.style.TextOverflow
-import androidx.ui.unit.dp
-import coil.request.GetRequest
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.ScrollableColumn
+import androidx.compose.foundation.Text
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.*
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
 import coil.transform.CircleCropTransformation
 import com.example.mvicompose.R
 import com.example.mvicompose.presentation.model.UiCharacter
@@ -35,7 +32,7 @@ fun Default() {
 @Composable
 fun Failure(e: Throwable, action: () -> Unit) {
     e.printStackTrace()
-    VerticalScroller {
+    ScrollableColumn {
         Column(
             modifier = Modifier.fillMaxSize().wrapContentSize(Alignment.Center)
                 .padding(start = 96.dp, end = 96.dp)
@@ -87,8 +84,8 @@ fun ComposeCharacters(characters: List<UiCharacter>, action: () -> Unit) {
 }
 
 @Composable
-fun VStack(child: @Composable() () -> Unit) =
-    VerticalScroller {
+fun VStack(child: @Composable () -> Unit) =
+    ScrollableColumn {
         Column(modifier = Modifier.fillMaxWidth()) {
             child()
         }
@@ -136,25 +133,25 @@ fun CharacterView(character: UiCharacter) =
 @Composable
 fun CharacterImage(urlImage: String) {
     CoilImage(
-        request = GetRequest.Builder(ContextAmbient.current)
-            .data(urlImage)
-            .transformations(CircleCropTransformation())
-            .build(),
-        modifier = Modifier.preferredSize(96.dp, 96.dp)
+        data = urlImage,
+        requestBuilder = {
+            transformations(CircleCropTransformation())
+        },
     )
 }
 
 @Composable
 fun Fab(action: () -> Unit) {
-    Column(modifier = Modifier.fillMaxWidth(), horizontalGravity = Alignment.End) {
+    Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End) {
         val icon = vectorResource(id = R.drawable.ic_refresh)
         FloatingActionButton(
             onClick = action,
-            modifier = Modifier.fillMaxHeight().wrapContentHeight(Alignment.Bottom)
+            modifier = Modifier.fillMaxHeight()
+                .wrapContentHeight(Alignment.Bottom)
                 .padding(36.dp),
             backgroundColor = MaterialTheme.colors.secondary
         ) {
-            Image(asset = icon, modifier = Modifier.preferredSize(48.dp))
+            Image(asset = icon, modifier = Modifier.preferredSize(24.dp))
         }
     }
 }

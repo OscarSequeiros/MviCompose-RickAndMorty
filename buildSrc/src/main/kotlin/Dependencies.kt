@@ -1,19 +1,20 @@
 object AndroidSdk {
     const val min = 21
-    const val buildTools = "29.0.3"
     const val compile = 29
 }
 
 object AndroidLibraries {
     object Versions {
-        const val core = "1.3.0"
-        const val appCompat = "1.1.0"
-        const val material = "1.1.0"
+        const val core = "1.3.1"
+        const val appCompat = "1.2.0"
+        const val material = "1.2.1"
+        const val lifecycleViewModel = "2.3.0-beta01"
     }
 
     const val core = "androidx.core:core-ktx:${Versions.core}"
     const val appCompat = "androidx.appcompat:appcompat:${Versions.appCompat}"
     const val material = "com.google.android.material:material:${Versions.material}"
+    const val lifecycleViewModel = "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycleViewModel}"
 }
 
 object ComposeLibraries {
@@ -34,6 +35,7 @@ object KotlinLibraries {
 
     const val kotlinStdLibrary = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${Versions.kotlin}"
     const val coroutinesCore = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutines}"
+    const val coroutinesAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutines}"
 }
 
 object ArrowLibraries {

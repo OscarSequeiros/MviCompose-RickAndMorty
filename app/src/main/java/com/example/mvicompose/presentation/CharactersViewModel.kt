@@ -1,59 +1,74 @@
 package com.example.mvicompose.presentation
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import arrow.core.NonEmptyList
+import com.example.mvicompose.domain.model.Character
+import com.example.mvicompose.domain.usecase.GetCharactersUseCase
 import com.example.mvicompose.mvibase.MviViewModel
-import com.example.mvicompose.presentation.CharactersAction.*
+import com.example.mvicompose.presentation.CharacterResult.LoadAllResult
+import com.example.mvicompose.presentation.CharactersAction.LoadAllAction
 import com.example.mvicompose.presentation.CharactersIntent.*
-import io.reactivex.Observable
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.functions.BiFunction
-import io.reactivex.subjects.PublishSubject
+import com.example.mvicompose.presentation.CharactersViewState.DefaultState
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.channels.BroadcastChannel
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.*
 
+@FlowPreview
+@ExperimentalCoroutinesApi
 class CharactersViewModel(
-    private val actionProcessor: CharactersProcessorHolder,
+    private val getCharactersUseCase: GetCharactersUseCase,
     private val stateMachine: CharactersStateMachine
 ) : ViewModel(), MviViewModel<CharactersIntent, CharactersViewState> {
 
-    private val intentsSubject: PublishSubject<CharactersIntent> = PublishSubject.create()
+    private val intentsChannel = BroadcastChannel<CharactersIntent>(Channel.BUFFERED)
 
-    val statesObservable: Observable<CharactersViewState> = compose()
+    private val _state = MutableStateFlow<CharactersViewState>(DefaultState)
 
-    private val liveDataStates: MutableLiveData<CharactersViewState> = MutableLiveData()
-
-    private val disposable = CompositeDisposable()
-
-    fun liveData(): LiveData<CharactersViewState> = liveDataStates
+    val state: StateFlow<CharactersViewState>
+        get() = _state
 
     init {
-        disposable.add(statesObservable.subscribe(liveDataStates::setValue) {})
+        intentsChannel
+            .asFlow()
+            .map { intent -> intent.toAction() }
+            .process()
+            .scan(DefaultState as CharactersViewState) { state, result ->
+                with (stateMachine) { state reduce result }
+            }
+            .onEach { newState -> _state.value = newState }
+            .launchIn(viewModelScope)
     }
 
-    private fun compose(): Observable<CharactersViewState> {
-        return intentsSubject
-            .map(::mapFromIntentToAction)
-            .compose(actionProcessor.actionProcessor)
-            .scan(CharactersViewState.DefaultState, reducer())
-    }
-
-    private fun reducer(): BiFunction<CharactersViewState, CharacterResult, CharactersViewState> =
-        BiFunction { previousState: CharactersViewState, result: CharacterResult ->
-            with(stateMachine) { previousState reduce result }
-        }
-
-    private fun mapFromIntentToAction(intent: CharactersIntent): CharactersAction {
-        return when (intent) {
+    private fun CharactersIntent.toAction(): CharactersAction {
+        return when (this) {
             LoadAllIntent, RetryLoadAllIntent, RefreshAllIntent -> LoadAllAction
         }
     }
 
-    override fun processIntents(intents: Observable<CharactersIntent>) {
-        intents.subscribe(intentsSubject)
+    private fun Flow<CharactersAction>.process(): Flow<CharacterResult> {
+        val getCharacters =
+            flow { emit(getCharactersUseCase()) }
+            .map { characters -> defineSuccessResult(characters) }
+            .onStart { emit(LoadAllResult.Loading) }
+            .catch { emit(LoadAllResult.Failure(it)) }
+
+        return merge(
+            filterIsInstance<LoadAllAction>().flatMapConcat { getCharacters }
+        )
     }
 
-    override fun onCleared() {
-        disposable.clear()
-        super.onCleared()
+    private fun defineSuccessResult(characters: List<Character>): LoadAllResult {
+        return if (characters.isEmpty()) {
+            LoadAllResult.EmptyCharacterList
+        } else {
+            LoadAllResult.FilledCharacterList(NonEmptyList.fromListUnsafe(characters))
+        }
+    }
+
+    override fun processIntent(intent: CharactersIntent) {
+        intentsChannel.offer(intent)
     }
 }

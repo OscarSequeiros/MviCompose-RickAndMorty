@@ -46,7 +46,6 @@ class CharactersStateMachine(
     private operator fun CharactersListState.plus(result: CharacterResult): CharactersViewState {
         return when (result) {
             Loading -> LoadingState
-            is FilledCharacterList  -> CharactersListState(mapper.map(result.characters))
             else    -> throw UnsupportedReduceException(this, result)
         }
     }

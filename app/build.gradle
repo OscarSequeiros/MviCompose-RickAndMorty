@@ -38,6 +38,9 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = "1.0.0-alpha04"
     }
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
 }
 
 dependencies {
@@ -74,6 +77,7 @@ dependencies {
     testImplementation TestLibraries.mockk
     testImplementation TestLibraries.coroutines
 
-    androidTestImplementation TestLibraries.androidJUnit
-    androidTestImplementation TestLibraries.espresso
+    androidTestImplementation TestAndroidLibraries.androidJUnit
+    androidTestImplementation TestAndroidLibraries.espresso
+    androidTestImplementation TestAndroidLibraries.coroutines
 }

@@ -1,7 +1,10 @@
 # MVI - Jetpack Compose
-Blueprint project for MVI and Compose. It consumes https://rickandmortyapi.com/api/ :cloud:
+Blueprint project for MVI and Jetpack Compose. 
 
-Medium article: https://medium.com/@OscarSequeiros/mvi-state-machine-and-jetpack-compose-74bba0283f07 :green_book:
+:cloud: It consumes https://rickandmortyapi.com/api/
+
+:green_book: [Medium article](https://medium.com/@OscarSequeiros/mvi-state-machine-and-jetpack-compose-74bba0283f07)
+
 
 ## Tools
  - [x] Flow

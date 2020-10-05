@@ -64,9 +64,6 @@ dependencies {
     implementation NetworkLibraries.adapterRx
     implementation NetworkLibraries.interceptor
 
-    implementation MultiThreadingLibraries.rxJava
-    implementation MultiThreadingLibraries.rxAndroid
-
     implementation CoilLibrary.coilCompose
 
     implementation ArrowLibraries.core

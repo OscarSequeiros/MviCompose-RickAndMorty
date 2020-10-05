@@ -70,16 +70,6 @@ object NetworkLibraries {
     const val interceptor = "com.squareup.okhttp3:logging-interceptor:${Versions.okHttpInterceptor}"
 }
 
-object MultiThreadingLibraries {
-    object Versions {
-        const val rxJava = "2.2.19"
-        const val rxAndroid = "2.1.1"
-    }
-
-    const val rxJava = "io.reactivex.rxjava2:rxjava:${Versions.rxJava}"
-    const val rxAndroid = "io.reactivex.rxjava2:rxandroid:${Versions.rxAndroid}"
-}
-
 object TestLibraries {
     object Versions {
         const val jUnit = "4.13"

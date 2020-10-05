@@ -10,8 +10,7 @@ import com.example.mvicompose.presentation.CharacterResult.LoadAllResult
 import com.example.mvicompose.presentation.CharactersAction.LoadAllAction
 import com.example.mvicompose.presentation.CharactersIntent.*
 import com.example.mvicompose.presentation.CharactersViewState.DefaultState
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.BroadcastChannel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
@@ -29,6 +28,7 @@ class CharactersViewModel(
 
     val state: StateFlow<CharactersViewState>
         get() = _state
+
 
     init {
         intentsChannel

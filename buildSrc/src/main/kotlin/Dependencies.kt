@@ -1,19 +1,20 @@
 object AndroidSdk {
     const val min = 21
-    const val buildTools = "29.0.3"
     const val compile = 29
 }
 
 object AndroidLibraries {
     object Versions {
-        const val core = "1.3.0"
-        const val appCompat = "1.1.0"
-        const val material = "1.1.0"
+        const val core = "1.3.1"
+        const val appCompat = "1.2.0"
+        const val material = "1.2.1"
+        const val lifecycleViewModel = "2.3.0-beta01"
     }
 
     const val core = "androidx.core:core-ktx:${Versions.core}"
     const val appCompat = "androidx.appcompat:appcompat:${Versions.appCompat}"
     const val material = "com.google.android.material:material:${Versions.material}"
+    const val lifecycleViewModel = "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycleViewModel}"
 }
 
 object ComposeLibraries {
@@ -29,9 +30,12 @@ object ComposeLibraries {
 object KotlinLibraries {
     object Versions {
         const val kotlin = "1.4.0"
+        const val coroutines = "1.3.9"
     }
 
     const val kotlinStdLibrary = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${Versions.kotlin}"
+    const val coroutinesCore = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutines}"
+    const val coroutinesAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutines}"
 }
 
 object ArrowLibraries {
@@ -66,16 +70,6 @@ object NetworkLibraries {
     const val interceptor = "com.squareup.okhttp3:logging-interceptor:${Versions.okHttpInterceptor}"
 }
 
-object MultiThreadingLibraries {
-    object Versions {
-        const val rxJava = "2.2.19"
-        const val rxAndroid = "2.1.1"
-    }
-
-    const val rxJava = "io.reactivex.rxjava2:rxjava:${Versions.rxJava}"
-    const val rxAndroid = "io.reactivex.rxjava2:rxandroid:${Versions.rxAndroid}"
-}
-
 object TestLibraries {
     object Versions {
         const val jUnit = "4.13"
@@ -89,5 +83,17 @@ object TestLibraries {
     const val androidJUnit = "androidx.test.ext:junit:${Versions.androidJUnit}"
     const val espresso = "androidx.test.espresso:espresso-core:${Versions.androidEspresso}"
     const val mockk = "io.mockk:mockk:${Versions.mockk}"
-    const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutines}"
+    const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutines}"
+}
+
+object TestAndroidLibraries {
+    object Versions {
+        const val androidJUnit = "1.1.1"
+        const val androidEspresso = "3.2.0"
+        const val coroutines = "1.3.9"
+    }
+
+    const val androidJUnit = "androidx.test.ext:junit:${Versions.androidJUnit}"
+    const val espresso = "androidx.test.espresso:espresso-core:${Versions.androidEspresso}"
+    const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutines}"
 }

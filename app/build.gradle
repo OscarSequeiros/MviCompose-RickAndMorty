@@ -7,7 +7,6 @@ plugins {
 
 android {
     compileSdkVersion AndroidSdk.compile
-    buildToolsVersion AndroidSdk.buildTools
 
     defaultConfig {
         applicationId "com.example.mvicompose"
@@ -17,10 +16,6 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-    }
-
-    buildFeatures {
-        compose true
     }
 
     buildTypes {
@@ -37,18 +32,27 @@ android {
         jvmTarget = '1.8'
         useIR = true
     }
+    buildFeatures {
+        compose true
+    }
     composeOptions {
-        kotlinCompilerVersion = "1.4.0"
         kotlinCompilerExtensionVersion = "1.0.0-alpha04"
+    }
+    testOptions {
+        unitTests.returnDefaultValues = true
     }
 }
 
 dependencies {
 
     implementation KotlinLibraries.kotlinStdLibrary
+    implementation KotlinLibraries.coroutinesCore
+    implementation KotlinLibraries.coroutinesAndroid
+
     implementation AndroidLibraries.core
     implementation AndroidLibraries.appCompat
     implementation AndroidLibraries.material
+    implementation AndroidLibraries.lifecycleViewModel
 
     implementation ComposeLibraries.ui
     implementation ComposeLibraries.material
@@ -60,9 +64,6 @@ dependencies {
     implementation NetworkLibraries.adapterRx
     implementation NetworkLibraries.interceptor
 
-    implementation MultiThreadingLibraries.rxJava
-    implementation MultiThreadingLibraries.rxAndroid
-
     implementation CoilLibrary.coilCompose
 
     implementation ArrowLibraries.core
@@ -73,6 +74,7 @@ dependencies {
     testImplementation TestLibraries.mockk
     testImplementation TestLibraries.coroutines
 
-    androidTestImplementation TestLibraries.androidJUnit
-    androidTestImplementation TestLibraries.espresso
+    androidTestImplementation TestAndroidLibraries.androidJUnit
+    androidTestImplementation TestAndroidLibraries.espresso
+    androidTestImplementation TestAndroidLibraries.coroutines
 }

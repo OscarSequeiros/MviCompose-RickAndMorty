@@ -5,10 +5,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.setContent
 import androidx.lifecycle.ViewModelProvider
-
 import com.example.mvicompose.mvibase.MviView
 import com.example.mvicompose.presentation.CharactersIntent
 import com.example.mvicompose.presentation.CharactersIntent.*
@@ -17,13 +16,12 @@ import com.example.mvicompose.presentation.CharactersViewModelFactory
 import com.example.mvicompose.presentation.CharactersViewState
 import com.example.mvicompose.presentation.CharactersViewState.*
 import com.example.mvicompose.ui.compose.*
-import io.reactivex.Observable
-import io.reactivex.subjects.PublishSubject
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 
+@FlowPreview
+@ExperimentalCoroutinesApi
 class MainActivity : AppCompatActivity(), MviView<CharactersIntent, CharactersViewState> {
-
-    private val retryLoadPublish = PublishSubject.create<RetryLoadAllIntent>()
-    private val refreshCharactersPublish = PublishSubject.create<RefreshAllIntent>()
 
     private val viewModel: CharactersViewModel by lazy(LazyThreadSafetyMode.NONE) {
         ViewModelProvider(this, CharactersViewModelFactory())
@@ -38,22 +36,17 @@ class MainActivity : AppCompatActivity(), MviView<CharactersIntent, CharactersVi
             val themeColors = if (isSystemInDarkTheme()) darkThemeColors else lightThemeColors
 
             MaterialTheme(colors = themeColors, typography = appTypography) {
-                viewModel.liveData().observeAsState().value?.let { state: CharactersViewState ->
-                    Render(state)
-                }
+                val state = viewModel.state.collectAsState()
+                Render(state.value)
             }
         }
     }
 
-    private fun processIntents(): Unit = viewModel.processIntents(intents())
+    private fun processIntents() = viewModel.processIntent(LoadAllIntent)
 
-    override fun intents(): Observable<CharactersIntent> {
-        return Observable.merge(
-            Observable.just(LoadAllIntent),
-            retryLoadPublish,
-            refreshCharactersPublish
-        )
-    }
+    private fun emitRefreshIntent() = viewModel.processIntent(RefreshAllIntent)
+
+    private fun emitRetryIntent() = viewModel.processIntent(RetryLoadAllIntent)
 
     @Composable
     override fun Render(state: CharactersViewState) {
@@ -65,9 +58,4 @@ class MainActivity : AppCompatActivity(), MviView<CharactersIntent, CharactersVi
             is FailureState         -> Failure(state.error) { emitRetryIntent() }
         }
     }
-
-    private fun emitRefreshIntent(): Unit = refreshCharactersPublish.onNext(RefreshAllIntent)
-
-    private fun emitRetryIntent(): Unit = retryLoadPublish.onNext(RetryLoadAllIntent)
-
 }

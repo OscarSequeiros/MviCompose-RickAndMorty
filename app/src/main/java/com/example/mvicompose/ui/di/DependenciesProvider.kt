@@ -10,7 +10,9 @@ import com.example.mvicompose.presentation.CharactersStateMachine
 import com.example.mvicompose.presentation.CharactersViewModel
 import com.example.mvicompose.presentation.mapper.UiCharacterMapper
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 
+@FlowPreview
 class DependenciesProvider {
 
     private val api = ApiClient().build()

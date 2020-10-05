@@ -1,5 +1,6 @@
 package com.example.mvicompose.presentation
 
+import com.example.mvicompose.CharactersFactory
 import com.example.mvicompose.mvibase.UnsupportedReduceException
 import com.example.mvicompose.presentation.CharacterResult.LoadAllResult
 import com.example.mvicompose.presentation.CharactersViewState.*
@@ -32,7 +33,7 @@ class CharactersStateMachineTest {
     @Test
     fun `given LoadingState and FilledCharacterList as result, when reduces, then gets CharactersListState`() {
         val previousState = LoadingState
-        val characters = makeFakeCharacters()
+        val characters = CharactersFactory.makeFakeNonEmptyCharacters()
         val result = LoadAllResult.FilledCharacterList(characters)
 
         val newState = with(stateMachine) { previousState reduce result }
@@ -88,7 +89,7 @@ class CharactersStateMachineTest {
 
     @Test
     fun `given CharactersListState and Loading as result, when reduces, then gets LoadingState`() {
-        val previousState = CharactersListState(makeFakeUiCharacters())
+        val previousState = CharactersListState(CharactersFactory.makeFakeUiCharacters())
         val result = LoadAllResult.Loading
 
         val newState = with(stateMachine) { previousState reduce result }
@@ -98,7 +99,7 @@ class CharactersStateMachineTest {
 
     @Test(expected = UnsupportedReduceException::class)
     fun `given CharactersListState and any other result, when reduces, then gets UnsupportedReduceException`() {
-        val previousState = CharactersListState(makeFakeUiCharacters())
+        val previousState = CharactersListState(CharactersFactory.makeFakeUiCharacters())
         val result = LoadAllResult.Failure(Throwable())
 
         with(stateMachine) { previousState reduce result }

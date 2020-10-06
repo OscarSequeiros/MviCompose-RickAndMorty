@@ -73,7 +73,7 @@ object NetworkLibraries {
     const val interceptor = "com.squareup.okhttp3:logging-interceptor:${Versions.okHttpInterceptor}"
     const val ktorAndroid = "io.ktor:ktor-client-android:${Versions.ktor}"
     const val ktorCio = "io.ktor:ktor-client-cio:${Versions.ktor}"
-    const val ktorSerialization = "io.ktor:ktor-client-serialization-jvm:${Versions.ktor}"
+    const val ktorGson = "io.ktor:ktor-client-gson:${Versions.ktor}"
 }
 
 object TestLibraries {

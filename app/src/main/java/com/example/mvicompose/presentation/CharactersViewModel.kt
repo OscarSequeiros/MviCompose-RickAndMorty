@@ -1,8 +1,6 @@
 package com.example.mvicompose.presentation
 
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import arrow.core.NonEmptyList
@@ -13,7 +11,8 @@ import com.example.mvicompose.presentation.CharacterResult.LoadAllResult
 import com.example.mvicompose.presentation.CharactersAction.LoadAllAction
 import com.example.mvicompose.presentation.CharactersIntent.*
 import com.example.mvicompose.presentation.CharactersViewState.DefaultState
-import kotlinx.coroutines.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.BroadcastChannel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*

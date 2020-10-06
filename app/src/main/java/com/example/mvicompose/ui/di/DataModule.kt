@@ -15,11 +15,9 @@ import dagger.hilt.android.components.ApplicationComponent
 abstract class DataModule {
 
     @Binds
-    abstract fun bindRepository(repository: CharacterDataRepository): CharacterRepository
-
+    abstract fun CharacterDataRepository.bind(): CharacterRepository
 
     companion object {
-
         @Provides
         fun providesApi(): RickAndMortyApi = ApiClient().build()
     }

@@ -10,7 +10,7 @@ import io.ktor.util.*
 import javax.inject.Inject
 
 @KtorExperimentalAPI
-class CharactersRemoteStore @Inject constructor(private val api: RickAndMortyApi) {
+class CharactersRemoteStore @Inject constructor() {
 
     @KtorExperimentalAPI
     private val client = HttpClient(CIO) {

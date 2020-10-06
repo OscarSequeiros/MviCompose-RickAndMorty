@@ -60,17 +60,9 @@ object CoilLibrary {
 
 object NetworkLibraries {
     object Versions {
-        const val gson = "2.8.6"
-        const val retrofit = "2.9.0"
-        const val okHttpInterceptor = "4.5.0"
         const val ktor = "1.4.1"
     }
 
-    const val gson = "com.google.code.gson:gson:${Versions.gson}"
-    const val retrofit = "com.squareup.retrofit2:retrofit:${Versions.retrofit}"
-    const val converterGson = "com.squareup.retrofit2:converter-gson:${Versions.retrofit}"
-    const val adapterRx = "com.squareup.retrofit2:adapter-rxjava2:${Versions.retrofit}"
-    const val interceptor = "com.squareup.okhttp3:logging-interceptor:${Versions.okHttpInterceptor}"
     const val ktorAndroid = "io.ktor:ktor-client-android:${Versions.ktor}"
     const val ktorCio = "io.ktor:ktor-client-cio:${Versions.ktor}"
     const val ktorGson = "io.ktor:ktor-client-gson:${Versions.ktor}"

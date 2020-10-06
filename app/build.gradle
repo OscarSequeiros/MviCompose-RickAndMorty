@@ -60,11 +60,6 @@ dependencies {
     implementation ComposeLibraries.material
     implementation ComposeLibraries.liveData
 
-    implementation NetworkLibraries.gson
-    implementation NetworkLibraries.retrofit
-    implementation NetworkLibraries.converterGson
-    implementation NetworkLibraries.adapterRx
-    implementation NetworkLibraries.interceptor
     implementation NetworkLibraries.ktorAndroid
     implementation NetworkLibraries.ktorCio
     implementation NetworkLibraries.ktorGson

@@ -1,9 +1,9 @@
 package com.example.mvicompose.ui.di
 
+import com.example.mvicompose.data.CharacterDataRepository
 import com.example.mvicompose.data.remote.ApiClient
 import com.example.mvicompose.data.remote.RickAndMortyApi
-import com.example.mvicompose.rx.SchedulerProvider
-import com.example.mvicompose.rx.SchedulerProviderImpl
+import com.example.mvicompose.domain.repository.CharacterRepository
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -12,8 +12,15 @@ import dagger.hilt.android.components.ApplicationComponent
 
 @InstallIn(ApplicationComponent::class)
 @Module
-object DataModule {
+abstract class DataModule {
 
-    @Provides
-    fun providesApi(): RickAndMortyApi = ApiClient().build()
+    @Binds
+    abstract fun bindRepository(repository: CharacterDataRepository): CharacterRepository
+
+
+    companion object {
+
+        @Provides
+        fun providesApi(): RickAndMortyApi = ApiClient().build()
+    }
 }

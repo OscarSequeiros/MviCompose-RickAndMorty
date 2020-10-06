@@ -8,7 +8,6 @@ plugins {
 
 android {
     compileSdkVersion AndroidSdk.compile
-    buildToolsVersion AndroidSdk.buildTools
 
     defaultConfig {
         applicationId "com.example.mvicompose"
@@ -32,25 +31,32 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+        useIR = true
     }
     buildFeatures {
         compose true
     }
     composeOptions {
-        kotlinCompilerVersion = "1.3.70-dev-withExperimentalGoogleExtensions-20200424"
-        kotlinCompilerExtensionVersion = "0.1.0-dev12"
+        kotlinCompilerExtensionVersion = "1.0.0-alpha04"
+    }
+    testOptions {
+        unitTests.returnDefaultValues = true
     }
 }
 
 dependencies {
 
     implementation KotlinLibraries.kotlinStdLibrary
+    implementation KotlinLibraries.coroutinesCore
+    implementation KotlinLibraries.coroutinesAndroid
+
     implementation AndroidLibraries.core
     implementation AndroidLibraries.appCompat
     implementation AndroidLibraries.material
     implementation AndroidLibraries.fragmentKtx
+    implementation AndroidLibraries.lifecycleViewModel
 
-    implementation ComposeLibraries.layout
+    implementation ComposeLibraries.ui
     implementation ComposeLibraries.material
     implementation ComposeLibraries.liveData
 
@@ -60,22 +66,21 @@ dependencies {
     implementation NetworkLibraries.adapterRx
     implementation NetworkLibraries.interceptor
 
-    implementation MultiThreadingLibraries.rxJava
-    implementation MultiThreadingLibraries.rxAndroid
-
     implementation CoilLibrary.coilCompose
-
     implementation ArrowLibraries.core
     implementation ArrowLibraries.syntax
     kapt ArrowLibraries.kapt
 
     implementation DILibraries.hilt
     implementation DILibraries.lifecycle
-    kapt DILibraries.kapt
+    kapt DILibraries.kaptHilt
+    kapt DILibraries.kaptLifecycle
 
     testImplementation TestLibraries.jUnit
     testImplementation TestLibraries.mockk
+    testImplementation TestLibraries.coroutines
 
-    androidTestImplementation TestLibraries.androidJUnit
-    androidTestImplementation TestLibraries.espresso
+    androidTestImplementation TestAndroidLibraries.androidJUnit
+    androidTestImplementation TestAndroidLibraries.espresso
+    androidTestImplementation TestAndroidLibraries.coroutines
 }

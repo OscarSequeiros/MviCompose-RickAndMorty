@@ -3,7 +3,11 @@ package com.example.mvicompose.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.mvicompose.ui.di.DependenciesProvider
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 
+@ExperimentalCoroutinesApi
+@FlowPreview
 class CharactersViewModelFactory : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")

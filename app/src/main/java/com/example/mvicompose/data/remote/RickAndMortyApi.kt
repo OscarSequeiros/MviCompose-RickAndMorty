@@ -9,6 +9,6 @@ import retrofit2.http.Query
 interface RickAndMortyApi {
 
     @GET("character/")
-    fun getCharacters(@Query("page") value: Int): Single<RemoteCharacters>
+    suspend fun getCharacters(@Query("page") value: Int): RemoteCharacters
 
 }

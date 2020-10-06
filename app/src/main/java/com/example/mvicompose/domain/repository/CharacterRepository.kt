@@ -5,5 +5,5 @@ import io.reactivex.Single
 
 interface CharacterRepository {
 
-    fun getAll(): Single<List<Character>>
+    suspend fun getAll(): List<Character>
 }

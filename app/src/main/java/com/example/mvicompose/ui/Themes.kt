@@ -1,16 +1,16 @@
 package com.example.mvicompose.ui
 
-import androidx.ui.graphics.Color
-import androidx.ui.material.darkColorPalette
-import androidx.ui.material.lightColorPalette
-import androidx.ui.text.font.FontStyle
-import androidx.ui.text.font.FontWeight
-import androidx.ui.text.font.ResourceFont
-import androidx.ui.text.font.fontFamily
-import androidx.ui.material.Typography
+import androidx.compose.material.Typography
+import androidx.compose.material.darkColors
+import androidx.compose.material.lightColors
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.font.ResourceFont
+import androidx.compose.ui.text.font.fontFamily
 import com.example.mvicompose.R
 
-val lightThemeColors = lightColorPalette(
+val lightThemeColors = lightColors(
     primary = Color(98, 0, 238),
     primaryVariant = Color(55, 0, 179),
     onPrimary = Color(18, 7, 9),
@@ -24,7 +24,7 @@ val lightThemeColors = lightColorPalette(
     onError = Color.White
 )
 
-val darkThemeColors = darkColorPalette(
+val darkThemeColors = darkColors(
     primary = Color(98, 0, 238),
     primaryVariant = Color(55, 0, 179),
     onPrimary = Color(212, 212, 195),

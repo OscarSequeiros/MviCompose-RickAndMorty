@@ -65,6 +65,9 @@ dependencies {
     implementation NetworkLibraries.converterGson
     implementation NetworkLibraries.adapterRx
     implementation NetworkLibraries.interceptor
+    implementation NetworkLibraries.ktorAndroid
+    implementation NetworkLibraries.ktorCio
+    implementation NetworkLibraries.ktorSerialization
 
     implementation CoilLibrary.coilCompose
     implementation ArrowLibraries.core

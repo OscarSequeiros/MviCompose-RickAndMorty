@@ -7,8 +7,9 @@ import com.example.mvicompose.domain.model.Character
 import com.example.mvicompose.domain.model.Gender
 import com.example.mvicompose.domain.model.Name
 import com.example.mvicompose.domain.model.Status
+import javax.inject.Inject
 
-class DataCharacterMapper {
+class DataCharacterMapper @Inject constructor() {
 
     fun map(characters: List<RemoteCharacter>): List<Character> {
         return characters.map(::map).filter { it.isDefined() }.flatten()

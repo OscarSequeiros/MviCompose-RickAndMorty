@@ -5,8 +5,9 @@ import com.example.mvicompose.mvibase.UnsupportedReduceException
 import com.example.mvicompose.presentation.CharacterResult.LoadAllResult.*
 import com.example.mvicompose.presentation.CharactersViewState.*
 import com.example.mvicompose.presentation.mapper.UiCharacterMapper
+import javax.inject.Inject
 
-class CharactersStateMachine(
+class CharactersStateMachine @Inject constructor(
     private val mapper: UiCharacterMapper
 ) : MviStateMachine<CharactersViewState, CharacterResult> {
 

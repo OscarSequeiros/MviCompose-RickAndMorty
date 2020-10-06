@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-android-extensions'
     id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
 }
 
 android {
@@ -52,6 +53,7 @@ dependencies {
     implementation AndroidLibraries.core
     implementation AndroidLibraries.appCompat
     implementation AndroidLibraries.material
+    implementation AndroidLibraries.fragmentKtx
     implementation AndroidLibraries.lifecycleViewModel
 
     implementation ComposeLibraries.ui
@@ -65,10 +67,14 @@ dependencies {
     implementation NetworkLibraries.interceptor
 
     implementation CoilLibrary.coilCompose
-
     implementation ArrowLibraries.core
     implementation ArrowLibraries.syntax
     kapt ArrowLibraries.kapt
+
+    implementation DILibraries.hilt
+    implementation DILibraries.lifecycle
+    kapt DILibraries.kaptHilt
+    kapt DILibraries.kaptLifecycle
 
     testImplementation TestLibraries.jUnit
     testImplementation TestLibraries.mockk

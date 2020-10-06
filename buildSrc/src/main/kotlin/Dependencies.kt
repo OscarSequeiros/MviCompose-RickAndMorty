@@ -9,12 +9,14 @@ object AndroidLibraries {
         const val appCompat = "1.2.0"
         const val material = "1.2.1"
         const val lifecycleViewModel = "2.3.0-beta01"
+        const val fragmentKtx = "1.2.5"
     }
 
     const val core = "androidx.core:core-ktx:${Versions.core}"
     const val appCompat = "androidx.appcompat:appcompat:${Versions.appCompat}"
     const val material = "com.google.android.material:material:${Versions.material}"
     const val lifecycleViewModel = "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycleViewModel}"
+    const val fragmentKtx = "androidx.fragment:fragment-ktx:${Versions.fragmentKtx}"
 }
 
 object ComposeLibraries {
@@ -96,4 +98,16 @@ object TestAndroidLibraries {
     const val androidJUnit = "androidx.test.ext:junit:${Versions.androidJUnit}"
     const val espresso = "androidx.test.espresso:espresso-core:${Versions.androidEspresso}"
     const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutines}"
+}
+
+object DILibraries {
+    object Versions {
+        const val hilt = "2.28-alpha"
+        const val lifecycle = "1.0.0-alpha01"
+    }
+
+    const val hilt = "com.google.dagger:hilt-android:${Versions.hilt}"
+    const val lifecycle = "androidx.hilt:hilt-lifecycle-viewmodel:${Versions.lifecycle}"
+    const val kaptHilt =  "com.google.dagger:hilt-android-compiler:${Versions.hilt}"
+    const val kaptLifecycle =  "androidx.hilt:hilt-compiler:${Versions.lifecycle}"
 }

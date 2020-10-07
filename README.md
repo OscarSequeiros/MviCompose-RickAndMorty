@@ -13,8 +13,11 @@ Blueprint project for MVI and Jetpack Compose.
  - [x] MVI
  - [x] State Machine
  - [x] Arrow
- - [ ] Hilt
- - [ ] Ktor
+ - [x] Hilt
+ - [x] Ktor
+ - [ ] Moshi
+ - [ ] Testing Compose
+ - [ ] Testing StateFlow
 
 ## State Machine
 ![alt text](https://miro.medium.com/max/1400/1*iDogsYXg42AptgKnLzjaPg.png)

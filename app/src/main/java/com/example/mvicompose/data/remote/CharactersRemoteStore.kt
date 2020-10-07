@@ -1,16 +1,49 @@
 package com.example.mvicompose.data.remote
 
 import com.example.mvicompose.data.remote.model.RemoteCharacter
-import io.reactivex.Single
+import com.example.mvicompose.data.remote.model.RemoteCharacters
+import io.ktor.client.*
+import io.ktor.client.engine.cio.*
+import io.ktor.client.features.*
+import io.ktor.client.features.json.*
+import io.ktor.client.features.logging.*
+import io.ktor.client.request.*
+import io.ktor.http.*
+import io.ktor.util.*
 import javax.inject.Inject
-import kotlin.random.Random
 
-class CharactersRemoteStore @Inject constructor(private val api: RickAndMortyApi) {
+@KtorExperimentalAPI
+class CharactersRemoteStore @Inject constructor() {
 
-    // It allows us to get different characters for every request:
-    private val random = Random(System.currentTimeMillis())
+    private val client = HttpClient(CIO) {
+        defaultRequest {
+            url {
+                protocol = URLProtocol.HTTPS
+                host = "rickandmortyapi.com"
+                encodedPath = "/api/" + url.encodedPath
+            }
+        }
+        engine {
+            endpoint {
+                connectTimeout = 20_000
+            }
+        }
+        install(JsonFeature) {
+            serializer = GsonSerializer()
+        }
+        install(Logging) {
+            logger = Logger.DEFAULT
+            level = LogLevel.ALL
+        }
+    }
 
     suspend fun getAllCharacters(): List<RemoteCharacter> {
-        return api.getCharacters(random.nextInt(1, 16)).results
+        // It allows us to get different characters for every request:
+        val page = (1..20).random()
+
+        val response = client.get<RemoteCharacters>("character") {
+            parameter("page", page)
+        }
+        return response.results
     }
 }

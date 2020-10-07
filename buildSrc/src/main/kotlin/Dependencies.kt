@@ -66,6 +66,7 @@ object NetworkLibraries {
     const val ktorAndroid = "io.ktor:ktor-client-android:${Versions.ktor}"
     const val ktorCio = "io.ktor:ktor-client-cio:${Versions.ktor}"
     const val ktorGson = "io.ktor:ktor-client-gson:${Versions.ktor}"
+    const val ktorLogging = "io.ktor:ktor-client-logging-jvm:${Versions.ktor}"
 }
 
 object TestLibraries {

@@ -63,6 +63,7 @@ dependencies {
     implementation NetworkLibraries.ktorAndroid
     implementation NetworkLibraries.ktorCio
     implementation NetworkLibraries.ktorGson
+    implementation NetworkLibraries.ktorLogging
 
     implementation CoilLibrary.coilCompose
     implementation ArrowLibraries.core

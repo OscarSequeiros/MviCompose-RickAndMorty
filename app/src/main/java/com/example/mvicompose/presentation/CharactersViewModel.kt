@@ -10,6 +10,8 @@ import com.example.mvicompose.mvibase.MviViewModel
 import com.example.mvicompose.presentation.CharacterResult.LoadAllResult
 import com.example.mvicompose.presentation.CharactersAction.LoadAllAction
 import com.example.mvicompose.presentation.CharactersIntent.*
+import com.example.mvicompose.presentation.CharactersViewState.Companion.optionDefaultState
+import com.example.mvicompose.presentation.CharactersViewState.Companion.getOrDefault
 import com.example.mvicompose.presentation.CharactersViewState.DefaultState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -31,16 +33,15 @@ class CharactersViewModel @ViewModelInject constructor (
     val state: StateFlow<CharactersViewState>
         get() = _state
 
-
     init {
         intentsChannel
             .asFlow()
             .map { intent -> intent.toAction() }
             .process()
-            .scan(DefaultState as CharactersViewState) { state, result ->
-                with (stateMachine) { state reduce result }
+            .scan(optionDefaultState) { state, result ->
+                with (stateMachine) { state.getOrDefault() reduce result }
             }
-            .onEach { newState -> _state.value = newState }
+            .onEach { state -> _state.value = state.getOrDefault() }
             .launchIn(viewModelScope)
     }
 

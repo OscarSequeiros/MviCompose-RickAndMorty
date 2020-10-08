@@ -1,7 +1,9 @@
 package com.example.mvicompose.presentation
 
+import arrow.core.None
+import arrow.core.Option
+import arrow.core.Some
 import com.example.mvicompose.mvibase.MviStateMachine
-import com.example.mvicompose.mvibase.UnsupportedReduceException
 import com.example.mvicompose.presentation.CharacterResult.LoadAllResult.*
 import com.example.mvicompose.presentation.CharactersViewState.*
 import com.example.mvicompose.presentation.mapper.UiCharacterMapper
@@ -11,7 +13,7 @@ class CharactersStateMachine @Inject constructor(
     private val mapper: UiCharacterMapper
 ) : MviStateMachine<CharactersViewState, CharacterResult> {
 
-    override fun CharactersViewState.reduce(result: CharacterResult): CharactersViewState {
+    override fun CharactersViewState.reduce(result: CharacterResult): Option<CharactersViewState> {
         return when (val previousState = this) {
             is DefaultState         -> previousState + result
             is LoadingState         -> previousState + result
@@ -21,40 +23,40 @@ class CharactersStateMachine @Inject constructor(
         }
     }
 
-    private operator fun DefaultState.plus(result: CharacterResult): CharactersViewState {
+    private operator fun DefaultState.plus(result: CharacterResult): Option<CharactersViewState> {
         return when (result) {
-            Loading -> LoadingState
-            else    -> throw UnsupportedReduceException(this, result)
+            Loading -> Some(LoadingState)
+            else    -> None
         }
     }
 
-    private operator fun LoadingState.plus(result: CharacterResult): CharactersViewState {
+    private operator fun LoadingState.plus(result: CharacterResult): Option<CharactersViewState> {
         return when (result) {
-            is FilledCharacterList  -> CharactersListState(mapper.map(result.characters))
-            is EmptyCharacterList   -> NoneCharactersState
-            is Failure              -> FailureState(result.error)
-            else                    -> throw UnsupportedReduceException(this, result)
+            is FilledCharacterList  -> Some(CharactersListState(mapper.map(result.characters)))
+            is EmptyCharacterList   -> Some(NoneCharactersState)
+            is Failure              -> Some(FailureState(result.error))
+            else                    -> None
         }
     }
 
-    private operator fun NoneCharactersState.plus(result: CharacterResult): CharactersViewState {
+    private operator fun NoneCharactersState.plus(result: CharacterResult): Option<CharactersViewState> {
         return when (result) {
-            Loading -> LoadingState
-            else    -> throw UnsupportedReduceException(this, result)
+            Loading -> Some(LoadingState)
+            else    -> None
         }
     }
 
-    private operator fun CharactersListState.plus(result: CharacterResult): CharactersViewState {
+    private operator fun CharactersListState.plus(result: CharacterResult): Option<CharactersViewState> {
         return when (result) {
-            Loading -> LoadingState
-            else    -> throw UnsupportedReduceException(this, result)
+            Loading -> Some(LoadingState)
+            else    -> None
         }
     }
 
-    private operator fun FailureState.plus(result: CharacterResult): CharactersViewState {
+    private operator fun FailureState.plus(result: CharacterResult): Option<CharactersViewState> {
         return when (result) {
-            Loading -> LoadingState
-            else    -> throw UnsupportedReduceException(this, result)
+            Loading -> Some(LoadingState)
+            else    -> None
         }
     }
 }

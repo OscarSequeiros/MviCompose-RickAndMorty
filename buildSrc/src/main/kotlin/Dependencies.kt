@@ -76,6 +76,7 @@ object TestLibraries {
         const val androidEspresso = "3.2.0"
         const val mockk = "1.10.0"
         const val coroutines = "1.3.9"
+        const val kotest = "4.2.6"
     }
 
     const val jUnit = "junit:junit:${Versions.jUnit}"
@@ -83,6 +84,7 @@ object TestLibraries {
     const val espresso = "androidx.test.espresso:espresso-core:${Versions.androidEspresso}"
     const val mockk = "io.mockk:mockk:${Versions.mockk}"
     const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutines}"
+    const val kotestArrow = "io.kotest:kotest-assertions-arrow:${Versions.kotest}"
 }
 
 object TestAndroidLibraries {

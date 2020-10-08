@@ -21,7 +21,7 @@ sealed class CharactersViewState : MviViewState {
 
         fun Option<CharactersViewState>.getOrDefault() = getOrElse { DefaultState }
 
-         val defaultAsOption: Option<CharactersViewState>
+         val optionDefaultState: Option<CharactersViewState>
             get() = Option(DefaultState)
     }
 }

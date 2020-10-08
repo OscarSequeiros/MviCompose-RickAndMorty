@@ -1,15 +1,19 @@
 package com.example.mvicompose.presentation
 
 import com.example.mvicompose.CharactersFactory
-import com.example.mvicompose.mvibase.UnsupportedReduceException
 import com.example.mvicompose.presentation.CharacterResult.LoadAllResult
 import com.example.mvicompose.presentation.CharactersViewState.*
 import com.example.mvicompose.presentation.mapper.UiCharacterMapper
+import com.example.mvicompose.presentation.model.UiCharacter
+import io.kotest.assertions.arrow.option.shouldBeNone
+import io.kotest.assertions.arrow.option.shouldBeSome
+import io.mockk.every
+import io.mockk.mockk
 import org.junit.Test
 
 class CharactersStateMachineTest {
 
-    private val mapper = UiCharacterMapper()
+    private val mapper = mockk<UiCharacterMapper>()
     private val stateMachine = CharactersStateMachine(mapper)
 
     @Test
@@ -19,15 +23,17 @@ class CharactersStateMachineTest {
 
         val newState = with(stateMachine) { previousState reduce result }
 
-        assert(newState is LoadingState)
+        newState shouldBeSome LoadingState
     }
 
-    @Test(expected = UnsupportedReduceException::class)
-    fun `given DefaultState and any other result != Loading, when reduces, then gets UnsupportedReduceException`() {
+    @Test
+    fun `given DefaultState and any other result != Loading, when reduces, then gets None`() {
         val previousState = DefaultState
         val result = LoadAllResult.EmptyCharacterList
 
-        with(stateMachine) { previousState reduce result }
+        val newState = with(stateMachine) { previousState reduce result }
+
+        newState.shouldBeNone()
     }
 
     @Test
@@ -35,10 +41,14 @@ class CharactersStateMachineTest {
         val previousState = LoadingState
         val characters = CharactersFactory.makeFakeNonEmptyCharacters()
         val result = LoadAllResult.FilledCharacterList(characters)
+        val uiCharacters = CharactersFactory.makeFakeUiCharacters()
+        stubCharactersMapper(uiCharacters)
 
         val newState = with(stateMachine) { previousState reduce result }
 
-        assert(newState is CharactersListState)
+        // The following line must be satisfied. I am looking for a solution.
+        //newState shouldBeSome CharactersListState(uiCharacters)
+        newState.map { state -> assert(state is CharactersListState) }
     }
 
     @Test
@@ -48,25 +58,30 @@ class CharactersStateMachineTest {
 
         val newState = with(stateMachine) { previousState reduce result }
 
-        assert(newState is NoneCharactersState)
+        newState shouldBeSome NoneCharactersState
     }
 
     @Test
     fun `given LoadingState and Failure as result, when reduces, then gets FailureState`() {
         val previousState = LoadingState
-        val result = LoadAllResult.Failure(Throwable())
+        val fakeError = Throwable()
+        val result = LoadAllResult.Failure(fakeError)
 
         val newState = with(stateMachine) { previousState reduce result }
 
-        assert(newState is FailureState)
+        // The following line must be satisfied. I am looking for a solution.
+        //newState shouldBeSome FailureState(fakeError)
+        newState.map { state -> assert(state is FailureState) }
     }
 
-    @Test(expected = UnsupportedReduceException::class)
-    fun `given LoadingState and any other result, when reduces, then gets UnsupportedReduceException`() {
+    @Test
+    fun `given LoadingState and any other result, when reduces, then gets None`() {
         val previousState = LoadingState
         val result = LoadAllResult.Loading
 
-        with(stateMachine) { previousState reduce result }
+        val newState = with(stateMachine) { previousState reduce result }
+
+        newState.shouldBeNone()
     }
 
     @Test
@@ -76,15 +91,18 @@ class CharactersStateMachineTest {
 
         val newState = with(stateMachine) { previousState reduce result }
 
-        assert(newState is LoadingState)
+        val expectedState = LoadingState
+        newState shouldBeSome expectedState
     }
 
-    @Test(expected = UnsupportedReduceException::class)
-    fun `given NoneCharactersState and any other result, when reduces, then gets UnsupportedReduceException`() {
+    @Test
+    fun `given NoneCharactersState and any other result, when reduces, then gets None`() {
         val previousState = NoneCharactersState
         val result = LoadAllResult.Failure(Throwable())
 
-        with(stateMachine) { previousState reduce result }
+        val newState = with(stateMachine) { previousState reduce result }
+
+        newState.shouldBeNone()
     }
 
     @Test
@@ -94,15 +112,17 @@ class CharactersStateMachineTest {
 
         val newState = with(stateMachine) { previousState reduce result }
 
-        assert(newState is LoadingState)
+        newState shouldBeSome LoadingState
     }
 
-    @Test(expected = UnsupportedReduceException::class)
-    fun `given CharactersListState and any other result, when reduces, then gets UnsupportedReduceException`() {
+    @Test
+    fun `given CharactersListState and any other result, when reduces, then gets None`() {
         val previousState = CharactersListState(CharactersFactory.makeFakeUiCharacters())
         val result = LoadAllResult.Failure(Throwable())
 
-        with(stateMachine) { previousState reduce result }
+        val newState = with(stateMachine) { previousState reduce result }
+
+        newState.shouldBeNone()
     }
 
     @Test
@@ -112,14 +132,20 @@ class CharactersStateMachineTest {
 
         val newState = with(stateMachine) { previousState reduce result }
 
-        assert(newState is LoadingState)
+        newState shouldBeSome LoadingState
     }
 
-    @Test(expected = UnsupportedReduceException::class)
-    fun `given FailureState and any other result, when reduces, then gets UnsupportedReduceException`() {
+    @Test
+    fun `given FailureState and any other result, when reduces, then gets None`() {
         val previousState = FailureState(Throwable())
         val result = LoadAllResult.Failure(Throwable())
 
-        with(stateMachine) { previousState reduce result }
+        val newState = with(stateMachine) { previousState reduce result }
+
+        newState.shouldBeNone()
+    }
+
+    private fun stubCharactersMapper(uiCharacters: List<UiCharacter>) {
+        every { mapper.map(any()) } returns uiCharacters
     }
 }

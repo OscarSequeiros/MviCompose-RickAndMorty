@@ -13,11 +13,7 @@ import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.runBlockingTest
-import kotlinx.coroutines.yield
-import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 
@@ -40,7 +36,6 @@ class CharactersViewModelTest {
     private val characters = CharactersFactory.makeFakeCharacters()
     private val uiCharacters = CharactersFactory.makeFakeUiCharacters()
 
-    @Ignore("Looking for how to test StateFlow")
     @Test
     fun `given characters from use case, when process LoadAllIntent, gets CharactersListState`() =
         coroutinesTestRule.testDispatcher.runBlockingTest {
@@ -49,14 +44,9 @@ class CharactersViewModelTest {
 
             viewModel.processIntent(LoadAllIntent)
 
-            val states = getStates()
-
-            assert(states[0] is DefaultState)
-            assert(states[1] is LoadingState)
-            assert(states[2] is CharactersListState)
+            assert(viewModel.state.value is CharactersListState)
         }
 
-    @Ignore("Looking for how to test StateFlow")
     @Test
     fun `given no characters from use case, when process LoadAllIntent, gets NoneCharactersState`() =
         coroutinesTestRule.testDispatcher.runBlockingTest {
@@ -65,14 +55,9 @@ class CharactersViewModelTest {
 
             viewModel.processIntent(LoadAllIntent)
 
-            val states = getStates()
-
-            assert(states[0] is DefaultState)
-            assert(states[1] is LoadingState)
-            assert(states[2] is NoneCharactersState)
+            assert(viewModel.state.value is NoneCharactersState)
         }
 
-    @Ignore("Looking for how to test StateFlow")
     @Test
     fun `given error from use case, when process LoadAllIntent, gets FailureState`() =
         coroutinesTestRule.testDispatcher.runBlockingTest {
@@ -81,14 +66,9 @@ class CharactersViewModelTest {
 
             viewModel.processIntent(LoadAllIntent)
 
-            val states = getStates()
-
-            assert(states[0] is DefaultState)
-            assert(states[1] is LoadingState)
-            assert(states[2] is FailureState)
+            assert(viewModel.state.value is FailureState)
         }
 
-    @Ignore("Looking for how to test StateFlow")
     @Test
     fun `given characters from use case, when process LoadAllIntent and RetryLoadAllIntent, gets CharactersListState`() =
         coroutinesTestRule.testDispatcher.runBlockingTest {
@@ -98,21 +78,8 @@ class CharactersViewModelTest {
             viewModel.processIntent(LoadAllIntent)
             viewModel.processIntent(RetryLoadAllIntent)
 
-            val states = getStates()
-
-            assert(states[0] is DefaultState)
-            assert(states[1] is LoadingState)
-            assert(states[2] is CharactersListState)
-            assert(states[3] is DefaultState)
-            assert(states[4] is CharactersListState)
+            assert(viewModel.state.value is CharactersListState)
         }
-
-
-    private suspend fun getStates() =
-        viewModel
-            .state
-            .onEach { yield() }
-            .toList()
 
     private fun stubUseCase(characters: List<Character>) {
         coEvery { useCase.invoke() } coAnswers { characters }

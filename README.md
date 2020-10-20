@@ -6,7 +6,7 @@ Blueprint project for MVI and Jetpack Compose.
 :green_book: [Medium article](https://medium.com/@OscarSequeiros/mvi-state-machine-and-jetpack-compose-74bba0283f07)
 
 
-## Tools
+## Tech stack
  - [x] Flow
  - [x] StateFlow
  - [x] Jetpack Compose
@@ -15,7 +15,6 @@ Blueprint project for MVI and Jetpack Compose.
  - [x] Arrow
  - [x] Hilt
  - [x] Ktor
- - [ ] Moshi
  - [ ] Testing Compose
  - [ ] Testing StateFlow
 

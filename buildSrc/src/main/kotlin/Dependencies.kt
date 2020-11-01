@@ -21,7 +21,7 @@ object AndroidLibraries {
 
 object ComposeLibraries {
     object Versions {
-        const val compose = "1.0.0-alpha05"
+        const val compose = "1.0.0-alpha06"
     }
 
     const val ui = "androidx.compose.ui:ui:${Versions.compose}"
@@ -52,7 +52,7 @@ object ArrowLibraries {
 
 object CoilLibrary {
     object Version {
-        const val coil = "0.3.0"
+        const val coil = "0.3.2"
     }
 
     const val coilCompose = "dev.chrisbanes.accompanist:accompanist-coil:${Version.coil}"

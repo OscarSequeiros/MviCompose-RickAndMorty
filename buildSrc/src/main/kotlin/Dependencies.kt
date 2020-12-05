@@ -31,7 +31,7 @@ object ComposeLibraries {
 
 object KotlinLibraries {
     object Versions {
-        const val kotlin = "1.4.0"
+        const val kotlin = "1.4.20"
         const val coroutines = "1.3.9"
     }
 
@@ -52,7 +52,7 @@ object ArrowLibraries {
 
 object CoilLibrary {
     object Version {
-        const val coil = "0.3.2"
+        const val coil = "0.4.0"
     }
 
     const val coilCompose = "dev.chrisbanes.accompanist:accompanist-coil:${Version.coil}"

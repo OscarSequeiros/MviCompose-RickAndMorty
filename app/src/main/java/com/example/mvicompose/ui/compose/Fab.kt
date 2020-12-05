@@ -16,9 +16,9 @@ fun Fab(action: () -> Unit) {
     Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End) {
         FloatingActionButton(
             onClick = action,
-            icon = {
+            content = {
                 Icon(
-                    asset = Icons.Filled.Refresh,
+                    imageVector = Icons.Filled.Refresh,
                     tint = Color.White
                 )
             },

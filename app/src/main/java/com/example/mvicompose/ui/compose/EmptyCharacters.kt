@@ -16,7 +16,7 @@ fun ComposeEmptyCharacters(action: () -> Unit) {
     Column(modifier = Modifier.fillMaxSize().wrapContentSize(Alignment.Center)) {
         val icon = vectorResource(id = R.drawable.ic_empty_state)
         Image(
-            asset = icon,
+            imageVector = icon,
             modifier = Modifier.fillMaxWidth().wrapContentSize(Alignment.Center)
         )
     }

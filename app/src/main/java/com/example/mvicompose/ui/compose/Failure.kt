@@ -1,9 +1,10 @@
 package com.example.mvicompose.ui.compose
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.Text
+
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,7 +23,7 @@ fun Failure(e: Throwable, action: () -> Unit) {
     ) {
         val icon = vectorResource(id = R.drawable.ic_not_found)
         Image(
-            asset = icon,
+            imageVector = icon,
             modifier = Modifier.fillMaxWidth().wrapContentSize(Alignment.Center)
         )
         Button(

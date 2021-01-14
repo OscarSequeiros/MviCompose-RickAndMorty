@@ -46,9 +46,8 @@ class CharactersStateMachineTest {
 
         val newState = with(stateMachine) { previousState reduce result }
 
-        // The following line must be satisfied. I am looking for a solution.
-        //newState shouldBeSome CharactersListState(uiCharacters)
         newState.map { state -> assert(state is CharactersListState) }
+        newState.map { state -> assert((state as CharactersListState).characters == uiCharacters) }
     }
 
     @Test
@@ -69,9 +68,8 @@ class CharactersStateMachineTest {
 
         val newState = with(stateMachine) { previousState reduce result }
 
-        // The following line must be satisfied. I am looking for a solution.
-        //newState shouldBeSome FailureState(fakeError)
         newState.map { state -> assert(state is FailureState) }
+        newState.map { state -> assert((state as FailureState).error == fakeError)  }
     }
 
     @Test

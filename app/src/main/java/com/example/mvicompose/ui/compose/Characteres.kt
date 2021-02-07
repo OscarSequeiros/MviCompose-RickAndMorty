@@ -1,39 +1,33 @@
 package com.example.mvicompose.ui.compose
 
-import androidx.compose.foundation.ScrollableColumn
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.transform.CircleCropTransformation
+import com.example.mvicompose.R
 import com.example.mvicompose.presentation.model.UiCharacter
 import dev.chrisbanes.accompanist.coil.CoilImage
 
 @Composable
 fun ComposeCharacters(characters: List<UiCharacter>, action: () -> Unit) {
-    VStack {
-        characters.map {
-            CharacterView(it)
+    LazyColumn {
+        itemsIndexed(characters) { _, character ->
+            CharacterView(character)
             CharacterDivider()
         }
     }
     Fab(action)
 }
-
-@Composable
-fun VStack(child: @Composable () -> Unit) =
-    ScrollableColumn {
-        Column(modifier = Modifier.fillMaxWidth()) {
-            child()
-        }
-    }
-
 
 @Composable
 fun CharacterDivider() =
@@ -44,7 +38,7 @@ fun CharacterView(character: UiCharacter) =
     Row(
         modifier = Modifier.padding(16.dp).fillMaxWidth().wrapContentSize(Alignment.CenterStart)
     ) {
-        CharacterImage(character.urlImage)
+        CharacterImage(character)
         Column(
             modifier = Modifier.fillMaxWidth().wrapContentSize(Alignment.CenterStart)
                 .padding(12.dp)
@@ -73,9 +67,13 @@ fun CharacterView(character: UiCharacter) =
     }
 
 @Composable
-fun CharacterImage(urlImage: String) {
+fun CharacterImage(character: UiCharacter) {
     CoilImage(
-        data = urlImage,
+        data = character.urlImage,
+        contentDescription = stringResource(
+            id = R.string.image_for_value,
+            listOf(character.name)
+        ),
         requestBuilder = {
             transformations(CircleCropTransformation())
         },

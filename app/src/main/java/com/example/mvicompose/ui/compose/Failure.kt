@@ -24,6 +24,7 @@ fun Failure(e: Throwable, action: () -> Unit) {
         val icon = vectorResource(id = R.drawable.ic_not_found)
         Image(
             imageVector = icon,
+            contentDescription = stringResource(R.string.failure_list_icon),
             modifier = Modifier.fillMaxWidth().wrapContentSize(Alignment.Center)
         )
         Button(

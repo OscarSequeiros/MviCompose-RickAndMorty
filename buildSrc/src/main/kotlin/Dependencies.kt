@@ -52,7 +52,7 @@ object ArrowLibraries {
 
 object CoilLibrary {
     object Version {
-        const val coil = "0.4.0"
+        const val coil = "0.5.0"
     }
 
     const val coilCompose = "dev.chrisbanes.accompanist:accompanist-coil:${Version.coil}"

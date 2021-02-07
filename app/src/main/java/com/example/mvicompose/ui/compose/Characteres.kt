@@ -8,12 +8,14 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.transform.CircleCropTransformation
 import com.example.mvicompose.presentation.model.UiCharacter
 import dev.chrisbanes.accompanist.coil.CoilImage
+import com.example.mvicompose.R
 
 @Composable
 fun ComposeCharacters(characters: List<UiCharacter>, action: () -> Unit) {
@@ -44,7 +46,7 @@ fun CharacterView(character: UiCharacter) =
     Row(
         modifier = Modifier.padding(16.dp).fillMaxWidth().wrapContentSize(Alignment.CenterStart)
     ) {
-        CharacterImage(character.urlImage)
+        CharacterImage(character)
         Column(
             modifier = Modifier.fillMaxWidth().wrapContentSize(Alignment.CenterStart)
                 .padding(12.dp)
@@ -73,9 +75,13 @@ fun CharacterView(character: UiCharacter) =
     }
 
 @Composable
-fun CharacterImage(urlImage: String) {
+fun CharacterImage(character: UiCharacter) {
     CoilImage(
-        data = urlImage,
+        data = character.urlImage,
+        contentDescription = stringResource(
+            id = R.string.image_for_value,
+            listOf(character.name)
+        ),
         requestBuilder = {
             transformations(CircleCropTransformation())
         },

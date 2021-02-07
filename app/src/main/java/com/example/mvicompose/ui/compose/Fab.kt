@@ -9,7 +9,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.mvicompose.R
 
 @Composable
 fun Fab(action: () -> Unit) {
@@ -19,6 +21,7 @@ fun Fab(action: () -> Unit) {
             content = {
                 Icon(
                     imageVector = Icons.Filled.Refresh,
+                    contentDescription = stringResource(R.string.refresh_icon),
                     tint = Color.White
                 )
             },

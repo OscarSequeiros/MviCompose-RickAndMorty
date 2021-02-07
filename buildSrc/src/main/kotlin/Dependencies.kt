@@ -21,7 +21,7 @@ object AndroidLibraries {
 
 object ComposeLibraries {
     object Versions {
-        const val compose = "1.0.0-alpha10"
+        const val compose = "1.0.0-alpha11"
     }
 
     const val ui = "androidx.compose.ui:ui:${Versions.compose}"
@@ -31,7 +31,7 @@ object ComposeLibraries {
 
 object KotlinLibraries {
     object Versions {
-        const val kotlin = "1.4.21"
+        const val kotlin = "1.4.21-2"
         const val coroutines = "1.3.9"
     }
 

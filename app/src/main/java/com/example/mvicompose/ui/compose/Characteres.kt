@@ -1,7 +1,8 @@
 package com.example.mvicompose.ui.compose
 
-import androidx.compose.foundation.ScrollableColumn
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -13,29 +14,20 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.transform.CircleCropTransformation
+import com.example.mvicompose.R
 import com.example.mvicompose.presentation.model.UiCharacter
 import dev.chrisbanes.accompanist.coil.CoilImage
-import com.example.mvicompose.R
 
 @Composable
 fun ComposeCharacters(characters: List<UiCharacter>, action: () -> Unit) {
-    VStack {
-        characters.map {
-            CharacterView(it)
+    LazyColumn {
+        itemsIndexed(characters) { _, character ->
+            CharacterView(character)
             CharacterDivider()
         }
     }
     Fab(action)
 }
-
-@Composable
-fun VStack(child: @Composable () -> Unit) =
-    ScrollableColumn {
-        Column(modifier = Modifier.fillMaxWidth()) {
-            child()
-        }
-    }
-
 
 @Composable
 fun CharacterDivider() =

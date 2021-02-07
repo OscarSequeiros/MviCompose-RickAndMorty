@@ -4,10 +4,7 @@ import androidx.compose.material.Typography
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.font.ResourceFont
-import androidx.compose.ui.text.font.fontFamily
+import androidx.compose.ui.text.font.*
 import com.example.mvicompose.R
 
 val lightThemeColors = lightColors(
@@ -38,18 +35,18 @@ val darkThemeColors = darkColors(
     onError = Color.White
 )
 
-val appFontFamily = fontFamily(
+val appFontFamily = FontFamily(
     fonts = listOf(
-        ResourceFont(
+        Font(
             resId = R.font.lato_bold,
             weight = FontWeight.Medium
         ),
-        ResourceFont(
+        Font(
             resId = R.font.lato_italic,
             weight = FontWeight.W300,
             style = FontStyle.Italic
         ),
-        ResourceFont(
+        Font(
             resId = R.font.lato_regular,
             weight = FontWeight.W400,
             style = FontStyle.Normal
